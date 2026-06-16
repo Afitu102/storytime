@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="style.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fairytales</title>
+</head>
+<body>
+ 
+ <header>
+  <h1>fairytales</h1>
+    <a href="index.html" class="back-btn">
+        ← Back Home
+    </a>
+</header>
+
+ <div class="story-card">
+
+        <h2>The First Voyage of Sinbad</h2>
+        <audio class="audio-player">
+            <source
+            src="https://files.catbox.moe/6p9dg0.mp3"
+            type="audio/mpeg">
+        </audio>
+<div class="controls">
+     <button class="play-btn">Play</button>
+     <button class="pause-btn"> Pause</button>
+     <span class="time">0:00</span>
+    </div>
+    </div>
+ 
+ <div class="story-card">
+
+        <h2>Snow White</h2>
+        <audio class="audio-player">
+            <source
+            src="https://files.catbox.moe/b6rihq.mp3"
+            type="audio/mpeg">
+        </audio>
+<div class="controls">
+     <button class="play-btn">Play</button>
+     <button class="pause-btn"> Pause</button>
+     <span class="time">0:00</span>
+    </div>
+    </div>
+ 
+ <div class="story-card">
+
+        <h2>Snow White</h2>
+        <audio class="audio-player">
+            <source
+            src="https://files.catbox.moe/b6rihq.mp3"
+            type="audio/mpeg">
+        </audio>
+<div class="controls">
+     <button class="play-btn">Play</button>
+     <button class="pause-btn"> Pause</button>
+     <span class="time">0:00</span>
+    </div>
+    </div>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ <script>
+
+let currentAudio = null;
+
+document.querySelectorAll(".story-card").forEach(card => {
+
+    const audio = card.querySelector(".audio-player");
+    const playBtn = card.querySelector(".play-btn");
+    const pauseBtn = card.querySelector(".pause-btn");
+    const timeDisplay = card.querySelector(".time");
+
+    function formatTime(seconds){
+        let mins = Math.floor(seconds / 60);
+        let secs = Math.floor(seconds % 60);
+
+        if(secs < 10){
+            secs = "0" + secs;
+        }
+
+        return mins + ":" + secs;
+    }
+
+    playBtn.addEventListener("click", () => {
+
+        if(currentAudio && currentAudio !== audio){
+
+            currentAudio.pause();
+
+            document.querySelectorAll(".play-btn")
+            .forEach(btn => {
+                btn.textContent = "▶ Play";
+            });
+
+        }
+
+        audio.play();
+
+        currentAudio = audio;
+
+        playBtn.textContent = "⏸ Playing";
+
+    });
+
+    pauseBtn.addEventListener("click", () => {
+
+        audio.pause();
+
+        playBtn.textContent = "▶ Play";
+
+    });
+
+    audio.addEventListener("timeupdate", () => {
+
+        timeDisplay.textContent =
+        formatTime(audio.currentTime);
+
+    });
+
+    audio.addEventListener("ended", () => {
+
+        playBtn.textContent = "▶ Play";
+
+    });
+
+});
+
+</script> 
+</body>
+</html>
