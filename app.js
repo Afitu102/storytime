@@ -151,36 +151,35 @@ if(savedTitle && savedTime && savedIndex !== null){
 // RECENTLY PLAYED (Homepage)
 // ===============================
 
-const recentContainer = document.getElementById("recentStories");
+document.addEventListener("DOMContentLoaded", function () {
 
-if (recentContainer) {
+    const recentContainer = document.getElementById("recentStories");
 
-    const recentStories =
-        JSON.parse(localStorage.getItem("recentStories")) || [];
+    if (!recentContainer) return;
+
+    const recentStories = JSON.parse(localStorage.getItem("recentStories")) || [];
 
     if (recentStories.length === 0) {
-
-        recentContainer.innerHTML =
-            "<p>No stories played yet.</p>";
-
-    } else {
-
-        recentContainer.innerHTML = "";
-
-        recentStories.forEach(story => {
-
-            recentContainer.innerHTML += `
-                <a href="${story.page}" class="recent-card">
-
-                    <h3>${story.title}</h3>
-
-                    <p>${story.category}</p>
-
-                </a>
-            `;
-
-        });
-
+        recentContainer.innerHTML = "<p>No stories played yet.</p>";
+        return;
     }
 
-}
+    recentContainer.innerHTML = "";
+
+    recentStories.forEach(story => {
+
+        const card = document.createElement("a");
+
+        card.href = story.page;
+        card.className = "recent-card";
+
+        card.innerHTML = `
+            <h3>${story.title}</h3>
+            <p>${story.category}</p>
+        `;
+
+        recentContainer.appendChild(card);
+
+    });
+
+});
