@@ -1,4 +1,3 @@
-<script>
 
 let currentAudio = null;
 
@@ -126,4 +125,3 @@ if(savedTitle && savedTime && savedIndex !== null){
     });
 
 }   
-</script>
