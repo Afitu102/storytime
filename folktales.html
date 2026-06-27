@@ -613,6 +613,53 @@ localStorage.setItem("storyIndex",
 
 });
 
+const savedTitle = localStorage.getItem("storyTitle");
+const savedTime = localStorage.getItem("storyTime");
+const savedIndex = localStorage.getItem("storyIndex");
+
+if(savedTitle && savedTime && savedIndex !== null){
+
+    continueCard.style.display = "block";
+
+    continueTitle.textContent = savedTitle;
+
+    continueTime.textContent =
+        "Resume from " + formatTime(Number(savedTime));
+
+    continueBtn.addEventListener("click", () => {
+
+        const audios =
+            document.querySelectorAll(".audio-player");
+
+        const audio =
+            audios[Number(savedIndex)];
+
+        if(audio){
+
+            if(currentAudio && currentAudio !== audio){
+                currentAudio.pause();
+            }
+
+            currentAudio = audio;
+
+            audio.currentTime = Number(savedTime);
+
+            audio.play();
+
+            audio.closest(".story-card")
+                 .querySelector(".play-btn")
+                 .textContent = "⏸ Playing";
+
+            audio.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+        }
+
+    });
+
+}   
 </script>
 </body>
 </html>
