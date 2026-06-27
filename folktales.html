@@ -561,13 +561,6 @@ document.querySelectorAll(".story-card").forEach(card => {
     const pauseBtn = card.querySelector(".pause-btn");
     const timeDisplay = card.querySelector(".time");
 
-        if(secs < 10){
-            secs = "0" + secs;
-        }
-
-        return mins + ":" + secs;
-    }
-
     playBtn.addEventListener("click", () => {
 
         if(currentAudio && currentAudio !== audio){
