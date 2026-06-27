@@ -1,4 +1,3 @@
-
 let currentAudio = null;
 
  const continueCard = document.getElementById("continueCard");
@@ -148,3 +147,41 @@ if(savedTitle && savedTime && savedIndex !== null){
     });
 
 }   
+
+// ===============================
+// RECENTLY PLAYED (Homepage)
+// ===============================
+
+const recentContainer = document.getElementById("recentStories");
+
+if (recentContainer) {
+
+    const recentStories =
+        JSON.parse(localStorage.getItem("recentStories")) || [];
+
+    if (recentStories.length === 0) {
+
+        recentContainer.innerHTML =
+            "<p>No stories played yet.</p>";
+
+    } else {
+
+        recentContainer.innerHTML = "";
+
+        recentStories.forEach(story => {
+
+            recentContainer.innerHTML += `
+                <a href="${story.page}" class="recent-card">
+
+                    <h3>${story.title}</h3>
+
+                    <p>${story.category}</p>
+
+                </a>
+            `;
+
+        });
+
+    }
+
+}
