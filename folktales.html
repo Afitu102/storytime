@@ -536,6 +536,24 @@ Continue
 
 let currentAudio = null;
 
+ const continueCard = document.getElementById("continueCard");
+const continueTitle = document.getElementById("continueTitle");
+const continueTime = document.getElementById("continueTime");
+const continueBtn = document.getElementById("continueBtn");
+
+let savedAudio = null;
+let savedCard = null;
+
+function formatTime(seconds){
+    let mins = Math.floor(seconds / 60);
+    let secs = Math.floor(seconds % 60);
+
+    if(secs < 10){
+        secs = "0" + secs;
+    }
+
+    return mins + ":" + secs;
+}   
 document.querySelectorAll(".story-card").forEach(card => {
 
     const audio = card.querySelector(".audio-player");
