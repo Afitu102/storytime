@@ -145,7 +145,7 @@ if(savedTitle && savedTime && savedIndex !== null){
         }
 
     });
- 
+}
 
 // ===============================
 // RECENTLY PLAYED (Homepage)
