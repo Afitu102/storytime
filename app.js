@@ -25,7 +25,9 @@ document.querySelectorAll(".story-card").forEach(card => {
     const playBtn = card.querySelector(".play-btn");
     const pauseBtn = card.querySelector(".pause-btn");
     const timeDisplay = card.querySelector(".time");
-
+    const title = card.querySelector("h2").textContent;
+    const category = card.dataset.category;
+    const page = card.dataset.page;
     playBtn.addEventListener("click", () => {
 
         if(currentAudio && currentAudio !== audio){
@@ -43,6 +45,27 @@ document.querySelectorAll(".story-card").forEach(card => {
 
         currentAudio = audio;
 
+       let recentStories =
+JSON.parse(localStorage.getItem("recentStories")) || [];
+
+// Remove duplicate if it already exists
+recentStories = recentStories.filter(story => story.title !== title);
+
+// Add newest story to the beginning
+recentStories.unshift({
+    title: title,
+    category: category,
+    page: page
+});
+
+// Keep only the latest 10 stories
+recentStories = recentStories.slice(0, 10);
+
+localStorage.setItem(
+    "recentStories",
+    JSON.stringify(recentStories)
+);
+     
         playBtn.textContent = "⏸ Playing";
 
     });
