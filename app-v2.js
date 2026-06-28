@@ -280,10 +280,14 @@ audio.addEventListener("timeupdate", () => {
 
         audio.addEventListener("ended", () => {
 
-            playBtn.textContent =
-                "▶ Play";
+    playBtn.textContent =
+        "▶ Play";
 
-        });
+});
+
+    });
+
+});
 
 // ======================================
 // SMART RESUME MANAGER
