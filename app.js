@@ -216,3 +216,46 @@ if (
 }
 
 
+// -----------------------------
+// HOMEPAGE - RECENTLY PLAYED
+// -----------------------------
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const recentContainer =
+        document.getElementById("recentStories");
+
+    if (!recentContainer) return;
+
+    const recentStories =
+        JSON.parse(localStorage.getItem("recentStories")) || [];
+
+    recentContainer.innerHTML = "";
+
+    if (recentStories.length === 0) {
+
+        recentContainer.innerHTML =
+            "<p>No stories played yet.</p>";
+
+        return;
+    }
+
+    recentStories.forEach(story => {
+
+        const recentCard =
+            document.createElement("a");
+
+        recentCard.className = "recent-card";
+
+        recentCard.href = story.page;
+
+        recentCard.innerHTML = `
+            <h3>${story.title}</h3>
+            <p>${story.category}</p>
+        `;
+
+        recentContainer.appendChild(recentCard);
+
+    });
+
+});
