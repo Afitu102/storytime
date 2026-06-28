@@ -84,7 +84,7 @@ recentStories.unshift({
 
 });
 
-    recentStories = recentStories.slice(0,10);
+    recentStories = recentStories.slice(0,2);
 
     localStorage.setItem(
         "recentStories",
