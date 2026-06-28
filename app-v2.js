@@ -56,3 +56,46 @@ document.addEventListener(
     loadTheme
 );
 
+// ======================================
+// THEME BUTTON
+// ======================================
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const themeBtn =
+        document.getElementById("themeToggle");
+
+    if (!themeBtn) return;
+
+    function updateThemeButton() {
+
+        const theme =
+            document.body.getAttribute("data-theme");
+
+        if (theme === "dark") {
+
+            themeBtn.innerHTML =
+                "🌙 Dark Mode";
+
+        } else {
+
+            themeBtn.innerHTML =
+                "☀️ Light Mode";
+
+        }
+
+    }
+
+    updateThemeButton();
+
+    themeBtn.addEventListener("click", () => {
+
+        toggleTheme();
+
+        updateThemeButton();
+
+    });
+
+});
+
+
