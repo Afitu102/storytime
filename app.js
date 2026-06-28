@@ -90,3 +90,63 @@ function saveRecentStory(card){
     );
 
 }
+
+// -----------------------------
+// AUDIO PLAYER
+// -----------------------------
+
+document.querySelectorAll(".story-card").forEach(card => {
+
+    const audio = card.querySelector(".audio-player");
+    const playBtn = card.querySelector(".play-btn");
+    const pauseBtn = card.querySelector(".pause-btn");
+    const timeDisplay = card.querySelector(".time");
+
+    playBtn.addEventListener("click", () => {
+
+        // Stop any other playing audio
+        if (currentAudio && currentAudio !== audio) {
+
+            currentAudio.pause();
+
+            document.querySelectorAll(".play-btn").forEach(btn => {
+                btn.textContent = "▶ Play";
+            });
+
+        }
+
+        audio.play();
+
+        currentAudio = audio;
+
+        playBtn.textContent = "⏸ Playing";
+
+        saveRecentStory(card);
+
+    });
+
+    pauseBtn.addEventListener("click", () => {
+
+        audio.pause();
+
+        playBtn.textContent = "▶ Play";
+
+    });
+
+    audio.addEventListener("timeupdate", () => {
+
+        timeDisplay.textContent =
+            formatTime(audio.currentTime);
+
+        saveProgress(card, audio);
+
+    });
+
+    audio.addEventListener("ended", () => {
+
+        playBtn.textContent = "▶ Play";
+
+    });
+
+});
+
