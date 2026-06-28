@@ -58,7 +58,7 @@ function saveProgress(card, audio){
 // SAVE RECENTLY PLAYED
 // -----------------------------
 
-function saveRecentStory(card){
+function saveRecentStory(card, audio){
 
     const title = card.querySelector("h2").textContent;
 
