@@ -295,8 +295,7 @@ function resumeStory() {
 
     if (!progress) return;
 
-    // If we are on the wrong page,
-    // go to the correct page.
+    // Wrong page? Go to the correct one.
     if (currentPage !== progress.page) {
 
         sessionStorage.setItem(
@@ -304,14 +303,19 @@ function resumeStory() {
             "true"
         );
 
-        window.location.href =
-            progress.page;
+        window.location.href = progress.page;
 
         return;
 
     }
 
-    }
+    // We are already on the correct page.
+    sessionStorage.setItem(
+        "storytime_resume",
+        "true"
+    );
+
+}
 
 
 
