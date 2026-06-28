@@ -98,4 +98,58 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
+// ======================================
+// STORAGE MANAGER
+// ======================================
 
+function saveProgress(story){
+
+    localStorage.setItem(
+        "storytime_progress",
+        JSON.stringify(story)
+    );
+
+}
+
+function getProgress(){
+
+    const data =
+        localStorage.getItem("storytime_progress");
+
+    return data
+        ? JSON.parse(data)
+        : null;
+
+}
+
+function saveRecentlyPlayed(story){
+
+    let recent =
+        JSON.parse(
+            localStorage.getItem("storytime_recent")
+        ) || [];
+
+    // Remove duplicate
+    recent =
+        recent.filter(item => item.title !== story.title);
+
+    // Add newest first
+    recent.unshift(story);
+
+    // Keep only latest 2
+    recent = recent.slice(0,2);
+
+    localStorage.setItem(
+        "storytime_recent",
+        JSON.stringify(recent)
+    );
+
+}
+
+function getRecentlyPlayed(){
+
+    return JSON.parse(
+        localStorage.getItem("storytime_recent")
+    ) || [];
+
+}
