@@ -150,3 +150,69 @@ document.querySelectorAll(".story-card").forEach(card => {
 
 });
 
+// -----------------------------
+// CONTINUE LISTENING
+// -----------------------------
+
+if (
+    continueCard &&
+    continueTitle &&
+    continueTime &&
+    continueBtn
+) {
+
+    const savedTitle = localStorage.getItem("storyTitle");
+    const savedTime = localStorage.getItem("storyTime");
+    const savedIndex = localStorage.getItem("storyIndex");
+
+    if (
+        savedTitle &&
+        savedTime &&
+        savedIndex !== null
+    ) {
+
+        continueCard.style.display = "block";
+
+        continueTitle.textContent = savedTitle;
+
+        continueTime.textContent =
+            "Resume from " + formatTime(Number(savedTime));
+
+        continueBtn.addEventListener("click", () => {
+
+            const audios =
+                document.querySelectorAll(".audio-player");
+
+            const audio =
+                audios[Number(savedIndex)];
+
+            if (!audio) return;
+
+            if (currentAudio && currentAudio !== audio) {
+                currentAudio.pause();
+            }
+
+            currentAudio = audio;
+
+            audio.currentTime = Number(savedTime);
+
+            audio.play();
+
+            const playBtn =
+                audio.closest(".story-card")
+                     .querySelector(".play-btn");
+
+            playBtn.textContent = "⏸ Playing";
+
+            audio.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+        });
+
+    }
+
+}
+
+
