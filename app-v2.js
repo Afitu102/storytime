@@ -377,3 +377,55 @@ if (playBtn) {
 
 });
                        
+// ======================================
+// CONTINUE LISTENING CARD
+// ======================================
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const continueCard =
+        document.getElementById("continueCard");
+
+    const continueTitle =
+        document.getElementById("continueTitle");
+
+    const continueTime =
+        document.getElementById("continueTime");
+
+    const continueBtn =
+        document.getElementById("continueBtn");
+
+    if (
+        !continueCard ||
+        !continueTitle ||
+        !continueTime ||
+        !continueBtn
+    ) return;
+
+    const progress = getProgress();
+
+    if (!progress) return;
+
+    continueCard.style.display = "block";
+
+    continueTitle.textContent =
+        progress.title;
+
+    const mins =
+        Math.floor(progress.time / 60);
+
+    const secs =
+        Math.floor(progress.time % 60);
+
+    continueTime.textContent =
+        "Continue from " +
+        mins + ":" +
+        (secs < 10 ? "0" + secs : secs);
+
+    continueBtn.addEventListener("click", () => {
+
+        resumeStory();
+
+    });
+
+});
