@@ -283,5 +283,34 @@ audio.addEventListener("timeupdate", () => {
 
         });
 
+// ======================================
+// SMART RESUME MANAGER
+// ======================================
+
+function resumeStory() {
+
+    const progress = getProgress();
+
+    if (!progress) return;
+
+    // If we are on the wrong page,
+    // go to the correct page.
+    if (currentPage !== progress.page) {
+
+        sessionStorage.setItem(
+            "storytime_resume",
+            "true"
+        );
+
+        window.location.href =
+            progress.page;
+
+        return;
+
+    }
+
+    }
 
 
+
+                       
