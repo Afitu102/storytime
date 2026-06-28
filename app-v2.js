@@ -239,7 +239,38 @@ document.addEventListener("DOMContentLoaded", () => {
             playBtn.textContent =
                 "▶ Play";
 
-        });
+
+});
+      // =============================
+// SAVE PROGRESS
+// =============================
+
+audio.addEventListener("timeupdate", () => {
+
+    if (!currentStory) return;
+
+    // Update timer
+    const mins = Math.floor(audio.currentTime / 60);
+    const secs = Math.floor(audio.currentTime % 60);
+
+    timeDisplay.textContent =
+        mins + ":" + (secs < 10 ? "0" + secs : secs);
+
+    // Save current progress
+    saveProgress({
+
+        title: currentStory.title,
+
+        category: currentStory.category,
+
+        page: currentStory.page,
+
+        time: audio.currentTime
+
+    });
+
+});      
+    
 
         // =============================
         // FINISHED
@@ -252,6 +283,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
         });
 
-    });
 
-});
+
