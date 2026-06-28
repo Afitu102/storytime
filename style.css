@@ -377,3 +377,21 @@ body.light-mode .play-btn{
 body.light-mode .pause-btn{
     background:#6b7280;
 }
+
+
+.recent-card h4{
+    margin:10px 0 6px;
+    font-size:18px;
+    color:inherit;
+}
+
+.recent-card p{
+    color:#666;
+    font-size:14px;
+}
+
+.recent-card h3{
+    color:#2563eb;
+    font-size:15px;
+    margin:0;
+}
