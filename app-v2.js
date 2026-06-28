@@ -360,5 +360,20 @@ if (!audio) return;
 
 audio.currentTime =
     progress.time;
+
+    currentAudio = audio;
+
+audio.play();
+
+const playBtn =
+    card.querySelector(".play-btn");
+
+if (playBtn) {
+
+    playBtn.textContent =
+        "⏸ Playing";
+
+}
+
 });
                        
