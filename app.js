@@ -252,9 +252,12 @@ document.addEventListener("DOMContentLoaded", () => {
         recentCard.href = story.page;
 
         recentCard.innerHTML = `
-            <h3>${story.title}</h3>
-            <p>${story.category}</p>
-        `;
+    <h3>▶ Continue Listening</h3>
+
+    <h4>${story.title}</h4>
+
+    <p>Resume from ${formatTime(story.time)}</p>
+`;
 
         recentContainer.appendChild(recentCard);
 
