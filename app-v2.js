@@ -259,15 +259,17 @@ audio.addEventListener("timeupdate", () => {
     // Save current progress
     saveProgress({
 
-        title: currentStory.title,
+    title: currentStory.title,
 
-        category: currentStory.category,
+    category: currentStory.category,
 
-        page: currentStory.page,
+    page: currentStory.page,
 
-        time: audio.currentTime
+    time: audio.currentTime,
 
-    });
+    index: [...document.querySelectorAll(".story-card")].indexOf(card)
+
+});
 
 });      
     
