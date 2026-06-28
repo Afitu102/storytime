@@ -255,7 +255,9 @@ document.addEventListener("DOMContentLoaded", () => {
     <h3>▶ Continue Listening</h3>
 
     <h4>${story.title}</h4>
+    <p>Resume from ${formatTime(story.time)}</p>
 `;
+    
 
         recentContainer.appendChild(recentCard);
 
