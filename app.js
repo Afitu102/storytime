@@ -1,185 +1,92 @@
+// ======================================
+// STORYTIME APP.JS
+// Version 2.0
+// ======================================
+
+// -----------------------------
+// GLOBAL VARIABLES
+// -----------------------------
+
 let currentAudio = null;
 
- const continueCard = document.getElementById("continueCard");
+const continueCard = document.getElementById("continueCard");
 const continueTitle = document.getElementById("continueTitle");
 const continueTime = document.getElementById("continueTime");
 const continueBtn = document.getElementById("continueBtn");
 
-let savedAudio = null;
-let savedCard = null;
+// -----------------------------
+// FORMAT TIME
+// -----------------------------
 
 function formatTime(seconds){
-    let mins = Math.floor(seconds / 60);
-    let secs = Math.floor(seconds % 60);
 
-    if(secs < 10){
-        secs = "0" + secs;
-    }
+    seconds = Math.floor(seconds);
 
-    return mins + ":" + secs;
-}   
-document.querySelectorAll(".story-card").forEach(card => {
+    const mins = Math.floor(seconds / 60);
 
-    const audio = card.querySelector(".audio-player");
-    const playBtn = card.querySelector(".play-btn");
-    const pauseBtn = card.querySelector(".pause-btn");
-    const timeDisplay = card.querySelector(".time");
-    const title = card.querySelector("h2").textContent;
-    const category = card.dataset.category;
-    const page = card.dataset.page;
-    playBtn.addEventListener("click", () => {
+    const secs = seconds % 60;
 
-        if(currentAudio && currentAudio !== audio){
+    return mins + ":" + String(secs).padStart(2,"0");
 
-            currentAudio.pause();
-
-            document.querySelectorAll(".play-btn")
-            .forEach(btn => {
-                btn.textContent = "▶ Play";
-            });
-
-        }
-
-        audio.play();
-
-        currentAudio = audio;
-
-       let recentStories =
-JSON.parse(localStorage.getItem("recentStories")) || [];
-
-// Remove duplicate if it already exists
-recentStories = recentStories.filter(story => story.title !== title);
-
-// Add newest story to the beginning
-recentStories.unshift({
-    title: title,
-    category: category,
-    page: page
-});
-
-// Keep only the latest 10 stories
-recentStories = recentStories.slice(0, 10);
-
-localStorage.setItem(
-    "recentStories",
-    JSON.stringify(recentStories)
-);
-     
-        playBtn.textContent = "⏸ Playing";
-
-    });
-
-    pauseBtn.addEventListener("click", () => {
-
-        audio.pause();
-
-        playBtn.textContent = "▶ Play";
-
-    });
-
-    audio.addEventListener("timeupdate", () => {
-
-        timeDisplay.textContent =
-        formatTime(audio.currentTime);
-      localStorage.setItem("storyTitle",
-    card.querySelector("h2").textContent);
-
-localStorage.setItem("storyTime",
-    audio.currentTime);
-
-localStorage.setItem("storyIndex",
-    [...document.querySelectorAll(".audio-player")].indexOf(audio));
-        
-    });
-
-    audio.addEventListener("ended", () => {
-
-        playBtn.textContent = "▶ Play";
-
-    });
-
-});
-
-const savedTitle = localStorage.getItem("storyTitle");
-const savedTime = localStorage.getItem("storyTime");
-const savedIndex = localStorage.getItem("storyIndex");
-
-if(savedTitle && savedTime && savedIndex !== null){
-
-    continueCard.style.display = "block";
-
-    continueTitle.textContent = savedTitle;
-
-    continueTime.textContent =
-        "Resume from " + formatTime(Number(savedTime));
-
-    continueBtn.addEventListener("click", () => {
-
-        const audios =
-            document.querySelectorAll(".audio-player");
-
-        const audio =
-            audios[Number(savedIndex)];
-
-        if(audio){
-
-            if(currentAudio && currentAudio !== audio){
-                currentAudio.pause();
-            }
-
-            currentAudio = audio;
-
-            audio.currentTime = Number(savedTime);
-
-            audio.play();
-
-            audio.closest(".story-card")
-                 .querySelector(".play-btn")
-                 .textContent = "⏸ Playing";
-
-            audio.scrollIntoView({
-                behavior: "smooth",
-                block: "center"
-            });
-
-        }
-
-    });
 }
 
-// ===============================
-// RECENTLY PLAYED (Homepage)
-// ===============================
+// -----------------------------
+// SAVE CONTINUE LISTENING
+// -----------------------------
 
-document.addEventListener("DOMContentLoaded", function () {
+function saveProgress(card, audio){
 
-    const recentContainer = document.getElementById("recentStories");
+    localStorage.setItem(
+        "storyTitle",
+        card.querySelector("h2").textContent
+    );
 
-    if (!recentContainer) return;
+    localStorage.setItem(
+        "storyTime",
+        audio.currentTime
+    );
 
-    const recentStories = JSON.parse(localStorage.getItem("recentStories")) || [];
+    localStorage.setItem(
+        "storyIndex",
+        [...document.querySelectorAll(".audio-player")]
+        .indexOf(audio)
+    );
 
-    if (recentStories.length === 0) {
-        recentContainer.innerHTML = "<p>No stories played yet.</p>";
-        return;
-    }
+}
 
-    recentContainer.innerHTML = "";
+// -----------------------------
+// SAVE RECENTLY PLAYED
+// -----------------------------
 
-    recentStories.forEach(story => {
+function saveRecentStory(card){
 
-        const card = document.createElement("a");
+    const title = card.querySelector("h2").textContent;
 
-        card.href = story.page;
-        card.className = "recent-card";
+    const category = card.dataset.category;
 
-        card.innerHTML = `
-            <h3>${story.title}</h3>
-            <p>${story.category}</p>
-        `;
+    const page = card.dataset.page;
 
-        recentContainer.appendChild(card);
+    let recentStories =
+        JSON.parse(localStorage.getItem("recentStories")) || [];
+
+    recentStories =
+        recentStories.filter(story => story.title !== title);
+
+    recentStories.unshift({
+
+        title,
+
+        category,
+
+        page
 
     });
 
-});
+    recentStories = recentStories.slice(0,10);
+
+    localStorage.setItem(
+        "recentStories",
+        JSON.stringify(recentStories)
+    );
+
+}
