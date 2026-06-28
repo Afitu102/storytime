@@ -153,3 +153,105 @@ function getRecentlyPlayed(){
     ) || [];
 
 }
+
+
+// ======================================
+// AUDIO MANAGER
+// ======================================
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const storyCards =
+        document.querySelectorAll(".story-card");
+
+    // Ignore pages without stories (like Homepage)
+    if (storyCards.length === 0) return;
+
+    storyCards.forEach(card => {
+
+        const audio =
+            card.querySelector(".audio-player");
+
+        const playBtn =
+            card.querySelector(".play-btn");
+
+        const pauseBtn =
+            card.querySelector(".pause-btn");
+
+        const timeDisplay =
+            card.querySelector(".time");
+
+        const title =
+            card.querySelector("h2").textContent;
+
+        const category =
+            card.dataset.category;
+
+        const page =
+            card.dataset.page;
+
+        // =============================
+        // PLAY
+        // =============================
+
+        playBtn.addEventListener("click", () => {
+
+            // Stop previous audio
+            if (currentAudio && currentAudio !== audio) {
+
+                currentAudio.pause();
+
+                document
+                    .querySelectorAll(".play-btn")
+                    .forEach(btn => {
+
+                        btn.textContent = "▶ Play";
+
+                    });
+
+            }
+
+            audio.play();
+
+            currentAudio = audio;
+
+            currentStory = {
+
+                title,
+                category,
+                page
+
+            };
+
+            playBtn.textContent =
+                "⏸ Playing";
+
+        });
+
+        // =============================
+        // PAUSE
+        // =============================
+
+        pauseBtn.addEventListener("click", () => {
+
+            audio.pause();
+
+            playBtn.textContent =
+                "▶ Play";
+
+        });
+
+        // =============================
+        // FINISHED
+        // =============================
+
+        audio.addEventListener("ended", () => {
+
+            playBtn.textContent =
+                "▶ Play";
+
+        });
+
+    });
+
+});
