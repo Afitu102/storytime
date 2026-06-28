@@ -72,15 +72,17 @@ function saveRecentStory(card, audio){
     recentStories =
         recentStories.filter(story => story.title !== title);
 
-    recentStories.unshift({
+recentStories.unshift({
 
-        title,
+    title: title,
 
-        category,
+    category: category,
 
-        page
+    page: page,
 
-    });
+    time: audio.currentTime
+
+});
 
     recentStories = recentStories.slice(0,10);
 
