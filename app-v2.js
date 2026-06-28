@@ -318,5 +318,37 @@ function resumeStory() {
 }
 
 
+// ======================================
+// AUTO RESUME AFTER PAGE LOAD
+// ======================================
 
+document.addEventListener("DOMContentLoaded", () => {
+
+    if (
+        sessionStorage.getItem("storytime_resume") !== "true"
+    ) return;
+
+    sessionStorage.removeItem("storytime_resume");
+
+    const progress = getProgress();
+
+    if (!progress) return;
+
+    const cards =
+        document.querySelectorAll(".story-card");
+
+    const card =
+        cards[progress.index];
+
+    if (!card) return;
+
+    card.scrollIntoView({
+
+        behavior: "smooth",
+
+        block: "center"
+
+    });
+
+});
                        
