@@ -310,3 +310,70 @@
     color:#666;
     font-size:14px;
 }
+
+/* ==========================
+   THEME BUTTON
+========================== */
+
+.theme-btn{
+    margin-top:15px;
+    padding:10px 18px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:600;
+    background:#2563eb;
+    color:#fff;
+    transition:.3s;
+}
+
+.theme-btn:hover{
+    opacity:.9;
+}
+
+/* ==========================
+   LIGHT MODE
+========================== */
+
+body.light-mode{
+    background:#f5f5f5;
+    color:#222;
+}
+
+body.light-mode .story-card,
+body.light-mode .welcome-box,
+body.light-mode .home-category-card,
+body.light-mode .continue-card{
+    background:#ffffff;
+    color:#222;
+    border:1px solid #ddd;
+}
+
+body.light-mode .story-card h2,
+body.light-mode .welcome-box h2,
+body.light-mode .home-category-card h3,
+body.light-mode .category-heading,
+body.light-mode .home-logo{
+    color:#111;
+}
+
+body.light-mode .home-subtitle,
+body.light-mode .welcome-box p,
+body.light-mode .home-category-card p,
+body.light-mode .time{
+    color:#555;
+}
+
+body.light-mode .back-btn{
+    background:#e5e7eb;
+    color:#111;
+}
+
+body.light-mode .play-btn{
+    background:#2563eb;
+}
+
+body.light-mode .pause-btn{
+    background:#6b7280;
+}
