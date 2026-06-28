@@ -353,6 +353,12 @@ document.addEventListener("DOMContentLoaded", () => {
         block: "center"
 
     });
+       const audio =
+    card.querySelector(".audio-player");
 
+if (!audio) return;
+
+audio.currentTime =
+    progress.time;
 });
                        
