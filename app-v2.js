@@ -223,10 +223,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
             };
 
+            saveRecentlyPlayed({
+
+    title,
+
+    category,
+
+    page,
+
+    time: audio.currentTime,
+
+    index: [...document.querySelectorAll(".story-card")].indexOf(card)
+
+});
+           
+           
             playBtn.textContent =
                 "⏸ Playing";
 
-        });
+ });
 
         // =============================
         // PAUSE
