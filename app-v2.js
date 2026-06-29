@@ -446,3 +446,51 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 });
+
+// ======================================
+// RECENTLY PLAYED (Homepage)
+// ======================================
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const recentContainer =
+        document.getElementById("recentStories");
+
+    if (!recentContainer) return;
+
+    const recent = getRecentlyPlayed();
+
+    if (recent.length === 0) return;
+
+    recentContainer.innerHTML = "";
+
+    recent.forEach(story => {
+
+        const item = document.createElement("div");
+
+        item.className = "recent-item";
+
+        item.innerHTML = `
+            <h3>${story.title}</h3>
+            <p>${story.category}</p>
+        `;
+
+        item.addEventListener("click", () => {
+
+            saveProgress(story);
+
+            sessionStorage.setItem(
+                "storytime_resume",
+                "true"
+            );
+
+            window.location.href =
+                story.page;
+
+        });
+
+        recentContainer.appendChild(item);
+
+    });
+
+});
