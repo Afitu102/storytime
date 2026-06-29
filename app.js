@@ -424,8 +424,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
     continueBtn.addEventListener("click", () => {
 
-        resumeStory();
+    const progress = getProgress();
 
-    });
+    if (!progress) return;
+
+    if (currentPage !== progress.page) {
+
+        window.location.href = progress.page;
+
+        return;
+
+    }
+
+    sessionStorage.setItem(
+        "storytime_resume",
+        "true"
+    );
+
+    location.reload();
+
+});
 
 });
