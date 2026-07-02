@@ -454,29 +454,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!progress) return;
 
+    sessionStorage.setItem(
+        "storytime_resume",
+        "true"
+    );
+
     if (currentPage !== progress.page) {
 
-    sessionStorage.setItem(
-        "storytime_resume",
-        "true"
-    );
+        window.location.href =
+            progress.page;
 
-    window.location.href =
-        progress.page;
+    } else {
 
-    return;
+        location.reload();
 
     }
-    }
-
-    sessionStorage.setItem(
-        "storytime_resume",
-        "true"
-    );
-
-    location.reload();
-
-});
 
 });
 
