@@ -376,9 +376,17 @@ if (!audio) return;
 audio.currentTime =
     progress.time;
 
-    currentAudio = audio;
+currentAudio = audio;
 
-audio.play();
+audio.addEventListener(
+    "canplay",
+    () => {
+
+        audio.play().catch(() => {});
+
+    },
+    { once: true }
+);
 
 const playBtn =
     card.querySelector(".play-btn");
