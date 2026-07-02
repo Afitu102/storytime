@@ -453,10 +453,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (currentPage !== progress.page) {
 
-        window.location.href = progress.page;
+    sessionStorage.setItem(
+        "storytime_resume",
+        "true"
+    );
 
-        return;
+    window.location.href =
+        progress.page;
 
+    return;
+
+    }
     }
 
     sessionStorage.setItem(
