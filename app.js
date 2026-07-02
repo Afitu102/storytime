@@ -486,6 +486,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
+});
+
+    
 // ======================================
 // RECENTLY PLAYED (Homepage)
 // ======================================
