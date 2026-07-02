@@ -211,7 +211,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
             }
 
-            audio.play();
+            const progress = getProgress();
+
+if (
+    progress &&
+    progress.title === title
+) {
+
+    audio.currentTime =
+        progress.time;
+
+}
+
+audio.play();
 
             currentAudio = audio;
 
