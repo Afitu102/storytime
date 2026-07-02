@@ -414,7 +414,9 @@ audio.addEventListener(
 );
 
 audio.load();
-                       
+
+});
+    
 // ======================================
 // CONTINUE LISTENING CARD
 // ======================================
