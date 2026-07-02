@@ -373,35 +373,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
 if (!audio) return;
 
-audio.currentTime = progress.time;
-
-audio.load();
-
-currentAudio = audio;
-
 audio.addEventListener(
     "loadedmetadata",
     () => {
 
         audio.currentTime = progress.time;
 
-        audio.play().catch(() => {});
+        // Update the timer immediately
+        const timeDisplay =
+            card.querySelector(".time");
+
+        if (timeDisplay) {
+
+            const mins =
+                Math.floor(progress.time / 60);
+
+            const secs =
+                Math.floor(progress.time % 60);
+
+            timeDisplay.textContent =
+                mins + ":" +
+                (secs < 10 ? "0" + secs : secs);
+
+        }
 
     },
     { once: true }
 );
 
-const playBtn =
-    card.querySelector(".play-btn");
-
-if (playBtn) {
-
-    playBtn.textContent =
-        "⏸ Playing";
-
-}
-
-});
+audio.load();
                        
 // ======================================
 // CONTINUE LISTENING CARD
