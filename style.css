@@ -1,3 +1,33 @@
+/* ======================================
+   THEME VARIABLES
+====================================== */
+
+:root{
+
+    --bg:#111827;
+    --card:#1f2937;
+    --card2:#374151;
+    --text:#ffffff;
+    --text2:#d1d5db;
+    --border:#374151;
+    --accent:#f59e0b;
+
+}
+
+body[data-theme="light"]{
+
+    --bg:#f5f5f5;
+    --card:#ffffff;
+    --card2:#ececec;
+    --text:#111827;
+    --text2:#4b5563;
+    --border:#d1d5db;
+    --accent:#f59e0b;
+
+}
+
+
+
 /* STORY CARD */
 
 .story-card{
