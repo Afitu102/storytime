@@ -223,7 +223,17 @@ if (
 
 }
 
-audio.play();
+audio.addEventListener("loadedmetadata", function restoreTime() {
+
+    audio.currentTime = progress.time;
+
+    audio.removeEventListener("loadedmetadata", restoreTime);
+
+    audio.play();
+
+});
+
+audio.load();
 
             currentAudio = audio;
 
