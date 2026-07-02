@@ -380,8 +380,10 @@ audio.load();
 currentAudio = audio;
 
 audio.addEventListener(
-    "canplay",
+    "loadedmetadata",
     () => {
+
+        audio.currentTime = progress.time;
 
         audio.play().catch(() => {});
 
