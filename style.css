@@ -317,11 +317,11 @@ body[data-theme="light"]{
 
 .recent-card{
     display:block;
-    background:#ffffff;
+    background:var(--card);
     padding:16px;
     border-radius:18px;
     text-decoration:none;
-    color:#222;
+    color:var(--text);
     box-shadow:0 5px 15px rgba(0,0,0,.08);
     transition:.25s;
 }
