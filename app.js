@@ -373,8 +373,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 if (!audio) return;
 
-audio.currentTime =
-    progress.time;
+audio.currentTime = progress.time;
+
+audio.load();
 
 currentAudio = audio;
 
