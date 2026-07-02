@@ -362,66 +362,75 @@ body[data-theme="light"]{
     opacity:.9;
 }
 
-/* ==========================
-   LIGHT MODE
-========================== */
+/* ======================================
+   GLOBAL THEME
+====================================== */
 
-body.light-mode{
-    background:#f5f5f5;
-    color:#222;
+body{
+
+    background:var(--bg);
+
+    color:var(--text);
+
+    transition:.3s;
+
 }
 
-body.light-mode .story-card,
-body.light-mode .welcome-box,
-body.light-mode .home-category-card,
-body.light-mode .continue-card{
-    background:#ffffff;
-    color:#222;
-    border:1px solid #ddd;
+.story-card,
+.welcome-box,
+.home-category-card,
+.continue-card{
+
+    background:var(--card);
+
+    color:var(--text);
+
+    border:1px solid var(--border);
+
+    transition:.3s;
+
 }
 
-body.light-mode .story-card h2,
-body.light-mode .welcome-box h2,
-body.light-mode .home-category-card h3,
-body.light-mode .category-heading,
-body.light-mode .home-logo{
-    color:#111;
+.story-card h2,
+.welcome-box h2,
+.home-category-card h3,
+.category-heading,
+.home-logo{
+
+    color:var(--text);
+
 }
 
-body.light-mode .home-subtitle,
-body.light-mode .welcome-box p,
-body.light-mode .home-category-card p,
-body.light-mode .time{
-    color:#555;
+.home-subtitle,
+.welcome-box p,
+.home-category-card p,
+.time,
+.continue-card p{
+
+    color:var(--text2);
+
 }
 
-body.light-mode .back-btn{
-    background:#e5e7eb;
-    color:#111;
+.back-btn{
+
+    background:var(--card2);
+
+    color:var(--text);
+
 }
 
-body.light-mode .play-btn{
-    background:#2563eb;
-}
+.recent-card{
 
-body.light-mode .pause-btn{
-    background:#6b7280;
-}
+    background:var(--card);
 
+    color:var(--text);
 
-.recent-card h4{
-    margin:10px 0 6px;
-    font-size:18px;
-    color:inherit;
+    border:1px solid var(--border);
+
 }
 
 .recent-card p{
-    color:#666;
-    font-size:14px;
-}
 
-.recent-card h3{
-    color:#2563eb;
-    font-size:15px;
-    margin:0;
+    color:var(--text2);
+
 }
