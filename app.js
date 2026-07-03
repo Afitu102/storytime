@@ -390,3 +390,59 @@ audio.addEventListener("ended", () => {
     });
 
 });
+
+// ======================================
+// CONTINUE LISTENING MANAGER V6
+// ======================================
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const continueCard =
+        document.getElementById("continueCard");
+
+    const continueTitle =
+        document.getElementById("continueTitle");
+
+    const continueTime =
+        document.getElementById("continueTime");
+
+    const continueBtn =
+        document.getElementById("continueBtn");
+
+    if (
+        !continueCard ||
+        !continueTitle ||
+        !continueTime ||
+        !continueBtn
+    ) return;
+
+    const story =
+        getContinueStory();
+
+    if (!story) {
+
+        continueCard.style.display = "none";
+
+        return;
+
+    }
+
+    continueCard.style.display = "block";
+
+    continueTitle.textContent =
+        story.title;
+
+    const mins =
+        Math.floor(story.time / 60);
+
+    const secs =
+        Math.floor(story.time % 60);
+
+    continueTime.textContent =
+        "Continue from " +
+        mins + ":" +
+        (secs < 10 ? "0" + secs : secs);
+
+});
+
+
