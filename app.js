@@ -252,3 +252,46 @@ function getRecentlyPlayed() {
 
 }
     
+// ======================================
+// AUDIO ENGINE V6 (PART A)
+// ======================================
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const storyCards =
+        document.querySelectorAll(".story-card");
+
+    // Ignore pages without stories
+    if (storyCards.length === 0) return;
+
+    storyCards.forEach(card => {
+
+        const audio =
+            card.querySelector(".audio-player");
+
+        const playBtn =
+            card.querySelector(".play-btn");
+
+        const pauseBtn =
+            card.querySelector(".pause-btn");
+
+        const timeDisplay =
+            card.querySelector(".time");
+
+        const title =
+            card.querySelector("h2").textContent;
+
+        const category =
+            card.dataset.category;
+
+        const page =
+            card.dataset.page;
+
+        const index =
+            [...storyCards].indexOf(card);
+
+        // PART B starts here...
+
+    });
+
+});
