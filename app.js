@@ -391,6 +391,38 @@ audio.addEventListener("ended", () => {
 
 });
 
+function audioResumeStory(story) {
+
+    const cards =
+        document.querySelectorAll(".story-card");
+
+    const card =
+        cards[story.index];
+
+    if (!card) return;
+
+    const audio =
+        card.querySelector(".audio-player");
+
+    const playBtn =
+        card.querySelector(".play-btn");
+
+    audio.currentTime =
+        story.time;
+
+    audio.play();
+
+    currentAudio = audio;
+
+    if (playBtn) {
+
+        playBtn.textContent =
+            "⏸ Playing";
+
+    }
+
+}
+
 // ======================================
 // CONTINUE LISTENING MANAGER V6
 // ======================================
