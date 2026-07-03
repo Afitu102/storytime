@@ -418,20 +418,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     sessionStorage.removeItem("storytime_resume");
 
-    const recent = getRecentlyPlayed();
+    const story =
+        getContinueStory();
 
-if (recent.length === 0) return;
-
-const progress =
-    getProgress(recent[0].title);
-
-if (!progress) return;
+    if (!story) return;
 
     const cards =
         document.querySelectorAll(".story-card");
 
     const card =
-        cards[progress.index];
+        cards[story.index];
 
     if (!card) return;
 
@@ -442,37 +438,41 @@ if (!progress) return;
         block: "center"
 
     });
-       const audio =
-    card.querySelector(".audio-player");
 
-if (!audio) return;
+    const audio =
+        card.querySelector(".audio-player");
 
-audio.addEventListener(
-    "loadedmetadata",
-    () => {
+    if (!audio) return;
 
-        audio.currentTime = progress.time;
+    audio.addEventListener(
+        "loadedmetadata",
+        () => {
 
-        audio.play();
+            audio.currentTime =
+                story.time;
 
-        currentAudio = audio;
+            const timeDisplay =
+                card.querySelector(".time");
 
-        const playBtn =
-            card.querySelector(".play-btn");
+            if (timeDisplay) {
 
-        if (playBtn) {
+                const mins =
+                    Math.floor(story.time / 60);
 
-            playBtn.textContent =
-                "⏸ Playing";
+                const secs =
+                    Math.floor(story.time % 60);
 
-        }
+                timeDisplay.textContent =
+                    mins + ":" +
+                    (secs < 10 ? "0" + secs : secs);
 
-    },
-    { once: true }
-);
+            }
 
-audio.load();
+        },
+        { once:true }
+
+    );
+
+    audio.load();
 
 });
-
-
