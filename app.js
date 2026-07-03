@@ -314,3 +314,62 @@ pauseBtn.addEventListener("click", () => {
     });
 
 });
+// =============================
+// SAVE PROGRESS
+// =============================
+
+audio.addEventListener("timeupdate", () => {
+
+    if (!currentStory) return;
+
+    const mins =
+        Math.floor(audio.currentTime / 60);
+
+    const secs =
+        Math.floor(audio.currentTime % 60);
+
+    // Update timer
+    timeDisplay.textContent =
+        mins + ":" +
+        (secs < 10 ? "0" + secs : secs);
+
+    // Story object
+    const story = {
+
+        title,
+        category,
+        page,
+        index,
+        time: audio.currentTime
+
+    };
+
+    // Save progress
+    saveProgress(story);
+
+    // Make this the Continue story
+    saveContinueStory(title);
+
+    // Update Recently Played
+    saveRecentlyPlayed(title);
+
+    // Update Continue Card live
+    const continueTitle =
+        document.getElementById("continueTitle");
+
+    const continueTime =
+        document.getElementById("continueTime");
+
+    if (continueTitle && continueTime) {
+
+        continueTitle.textContent =
+            title;
+
+        continueTime.textContent =
+            "Continue from " +
+            mins + ":" +
+            (secs < 10 ? "0" + secs : secs);
+
+    }
+
+});
