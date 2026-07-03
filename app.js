@@ -381,29 +381,27 @@ if (continueTitle && continueTime) {
 
 function resumeStory() {
 
-    getProgress(title)
+    const story = getContinueStory();
 
-    if (!progress) return;
+    if (!story) return;
 
-    // Wrong page? Go to the correct one.
-    if (currentPage !== progress.page) {
-
-        sessionStorage.setItem(
-            "storytime_resume",
-            "true"
-        );
-
-        window.location.href = progress.page;
-
-        return;
-
-    }
-
-    // We are already on the correct page.
     sessionStorage.setItem(
         "storytime_resume",
         "true"
     );
+
+    if (currentPage !== story.page) {
+
+        window.location.href =
+            story.page;
+
+    } else {
+
+        document.dispatchEvent(
+            new Event("storytime_resume")
+        );
+
+    }
 
 }
 
