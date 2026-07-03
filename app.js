@@ -386,9 +386,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     sessionStorage.removeItem("storytime_resume");
 
-    const progress = getProgress();
+    const recent = getRecentlyPlayed();
 
-    if (!progress) return;
+if (recent.length === 0) return;
+
+const progress =
+    getProgress(recent[0].title);
+
+if (!progress) return;
 
     const cards =
         document.querySelectorAll(".story-card");
