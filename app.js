@@ -99,57 +99,74 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ======================================
-// STORY PROGRESS MANAGER V4
+// STORY PROGRESS MANAGER V5
 // ======================================
 
+// Save progress for every story
 function saveProgress(story){
 
     let progress = JSON.parse(
-
         localStorage.getItem("storytime_progress")
-
     ) || {};
 
     progress[story.title] = story;
 
     localStorage.setItem(
-
         "storytime_progress",
-
         JSON.stringify(progress)
-
     );
 
 }
 
+// Get one story's progress
 function getProgress(title){
 
     const progress = JSON.parse(
-
         localStorage.getItem("storytime_progress")
-
     ) || {};
 
-    if(title){
+    return progress[title] || null;
 
-        return progress[title] || null;
+}
 
-    }
+// ======================================
+// CONTINUE LISTENING
+// ======================================
 
-    return progress;
+function saveContinueStory(story){
 
-        }
+    localStorage.setItem(
+        "storytime_continue",
+        JSON.stringify(story)
+    );
+
+}
+
+function getContinueStory(){
+
+    const story =
+        localStorage.getItem("storytime_continue");
+
+    return story
+        ? JSON.parse(story)
+        : null;
+
+}
+
+// ======================================
+// RECENTLY PLAYED
+// ======================================
 
 function saveRecentlyPlayed(story){
 
-    let recent =
-        JSON.parse(
-            localStorage.getItem("storytime_recent")
-        ) || [];
+    let recent = JSON.parse(
+        localStorage.getItem("storytime_recent")
+    ) || [];
 
     // Remove duplicate
-    recent =
-        recent.filter(item => item.title !== story.title);
+    recent = recent.filter(
+        item => item.title !== story.title
+    );
 
     // Add newest first
     recent.unshift(story);
@@ -172,6 +189,7 @@ function getRecentlyPlayed(){
 
 }
 
+});
 
 // ======================================
 // AUDIO MANAGER
@@ -461,120 +479,3 @@ audio.load();
 });
 
 
-// ======================================
-// CONTINUE LISTENING CARD
-// ======================================
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    const continueCard =
-        document.getElementById("continueCard");
-
-    const continueTitle =
-        document.getElementById("continueTitle");
-
-    const continueTime =
-        document.getElementById("continueTime");
-
-    const continueBtn =
-        document.getElementById("continueBtn");
-
-    if (
-        !continueCard ||
-        !continueTitle ||
-        !continueTime ||
-        !continueBtn
-    ) return;
-
-    const progress = getProgress();
-
-    if (!progress) return;
-
-    continueCard.style.display = "block";
-
-    continueTitle.textContent =
-        progress.title;
-
-    const mins =
-        Math.floor(progress.time / 60);
-
-    const secs =
-        Math.floor(progress.time % 60);
-
-    continueTime.textContent =
-        "Continue from " +
-        mins + ":" +
-        (secs < 10 ? "0" + secs : secs);
-
-    continueBtn.addEventListener("click", () => {
-
-    const progress = getProgress();
-
-    if (!progress) return;
-
-    sessionStorage.setItem(
-        "storytime_resume",
-        "true"
-    );
-
-    if (currentPage !== progress.page) {
-
-        window.location.href =
-            progress.page;
-
-    } else {
-
-        location.reload();
-
-    }
-
-});
-
-});
-
-    
-// ======================================
-// RECENTLY PLAYED (Homepage)
-// ======================================
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    const recentContainer =
-        document.getElementById("recentStories");
-
-    if (!recentContainer) return;
-
-    const recent = getRecentlyPlayed();
-
-    if (recent.length === 0) return;
-
-    recentContainer.innerHTML = "";
-
-    recent.forEach(story => {
-
-        const item = document.createElement("div");
-
-        item.className = "recent-item";
-
-        item.innerHTML = `
-            <h3>${story.title}</h3>
-            <p>${story.category}</p>
-        `;
-
-        item.addEventListener("click", () => {
-
-            sessionStorage.setItem(
-                "storytime_resume",
-                "true"
-            );
-
-            window.location.href =
-                story.page;
-
-        });
-
-        recentContainer.appendChild(item);
-
-    });
-
-});
