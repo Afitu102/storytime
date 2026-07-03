@@ -368,8 +368,26 @@ audio.addEventListener("timeupdate", () => {
         continueTime.textContent =
             "Continue from " +
             mins + ":" +
-            (secs < 10 ? "0" + secs : secs);
+            (secs < 10 ? "0" + secs : secs)
+    
+    }
+   
+    
+    // =============================
+// FINISHED
+// =============================
+
+audio.addEventListener("ended", () => {
+
+    playBtn.textContent =
+        "▶ Play";
+
+    if (currentAudio === audio) {
+
+        currentAudio = null;
 
     }
 
+});    
+  });
 });
