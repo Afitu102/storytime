@@ -322,7 +322,24 @@ audio.addEventListener("timeupdate", () => {
     index: [...document.querySelectorAll(".story-card")].indexOf(card)
 
 });
+const continueTitle =
+    document.getElementById("continueTitle");
 
+const continueTime =
+    document.getElementById("continueTime");
+
+if (continueTitle && continueTime) {
+
+    continueTitle.textContent =
+        currentStory.title;
+
+    continueTime.textContent =
+        "Continue from " +
+        mins + ":" +
+        (secs < 10 ? "0" + secs : secs);
+
+}
+    
 });      
     
 
