@@ -189,7 +189,6 @@ function getRecentlyPlayed(){
 
 }
 
-});
 
 // ======================================
 // AUDIO MANAGER
@@ -382,7 +381,7 @@ if (continueTitle && continueTime) {
 
 function resumeStory() {
 
-    const progress = getProgress();
+    getProgress(title)
 
     if (!progress) return;
 
