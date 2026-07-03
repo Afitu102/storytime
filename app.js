@@ -99,11 +99,4 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-    return story
-        ? JSON.parse(story)
-        : null;
-
-}
-
-       
     
