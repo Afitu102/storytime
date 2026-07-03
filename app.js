@@ -291,7 +291,67 @@ document.addEventListener("DOMContentLoaded", () => {
             [...storyCards].indexOf(card);
 
         // PART B starts here...
+        // =============================
+// PLAY
+// =============================
 
+playBtn.addEventListener("click", () => {
+
+    // Stop previous audio
+    if (currentAudio && currentAudio !== audio) {
+
+        currentAudio.pause();
+
+        document
+            .querySelectorAll(".play-btn")
+            .forEach(btn => {
+
+                btn.textContent = "▶ Play";
+
+            });
+
+    }
+
+    currentAudio = audio;
+
+    currentStory = {
+
+        title,
+        category,
+        page,
+        index
+
+    };
+
+    const progress =
+        getProgress(title);
+
+    if (progress) {
+
+        audio.currentTime =
+            progress.time;
+
+    }
+
+    audio.play();
+
+    playBtn.textContent =
+        "⏸ Playing";
+
+});
+
+// =============================
+// PAUSE
+// =============================
+
+pauseBtn.addEventListener("click", () => {
+
+    audio.pause();
+
+    playBtn.textContent =
+        "▶ Play";
+
+});
     });
 
 });
