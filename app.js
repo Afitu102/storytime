@@ -224,17 +224,14 @@ document.addEventListener("DOMContentLoaded", () => {
                     .forEach(btn => {
 
                         btn.textContent = "▶ Play";
+                    
+    });
 
-                    });
+   }
 
-            }
+   const progress = getProgress(title);
 
-            const progress = getProgress();
-
-if (
-    progress &&
-    progress.title === title
-) {
+if (progress) {
 
     audio.currentTime =
         progress.time;
