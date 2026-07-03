@@ -99,28 +99,46 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ======================================
-// STORAGE MANAGER
+// STORY PROGRESS MANAGER V4
 // ======================================
 
 function saveProgress(story){
 
+    let progress = JSON.parse(
+
+        localStorage.getItem("storytime_progress")
+
+    ) || {};
+
+    progress[story.title] = story;
+
     localStorage.setItem(
+
         "storytime_progress",
-        JSON.stringify(story)
+
+        JSON.stringify(progress)
+
     );
 
 }
 
-function getProgress(){
+function getProgress(title){
 
-    const data =
-        localStorage.getItem("storytime_progress");
+    const progress = JSON.parse(
 
-    return data
-        ? JSON.parse(data)
-        : null;
+        localStorage.getItem("storytime_progress")
 
-}
+    ) || {};
+
+    if(title){
+
+        return progress[title] || null;
+
+    }
+
+    return progress;
+
+        }
 
 function saveRecentlyPlayed(story){
 
