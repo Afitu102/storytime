@@ -549,8 +549,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         item.addEventListener("click", () => {
 
-            saveProgress(story);
-
             sessionStorage.setItem(
                 "storytime_resume",
                 "true"
