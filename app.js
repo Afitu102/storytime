@@ -251,8 +251,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // PART B starts here...
         // =============================
-// PLAY
-// =============================
+          // PLAY
+        // =============================
 
 playBtn.addEventListener("click", () => {
 
@@ -311,9 +311,7 @@ pauseBtn.addEventListener("click", () => {
         "▶ Play";
 
 });
-    });
 
-});
 // =============================
 // SAVE PROGRESS
 // =============================
@@ -371,7 +369,7 @@ audio.addEventListener("timeupdate", () => {
             (secs < 10 ? "0" + secs : secs)
     
     }
-   
+   });    
     
     // =============================
 // FINISHED
@@ -389,5 +387,4 @@ audio.addEventListener("ended", () => {
     }
 
 });    
-  });
-});
+
