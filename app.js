@@ -421,21 +421,17 @@ audio.addEventListener(
 
         audio.currentTime = progress.time;
 
-        // Update the timer immediately
-        const timeDisplay =
-            card.querySelector(".time");
+        audio.play();
 
-        if (timeDisplay) {
+        currentAudio = audio;
 
-            const mins =
-                Math.floor(progress.time / 60);
+        const playBtn =
+            card.querySelector(".play-btn");
 
-            const secs =
-                Math.floor(progress.time % 60);
+        if (playBtn) {
 
-            timeDisplay.textContent =
-                mins + ":" +
-                (secs < 10 ? "0" + secs : secs);
+            playBtn.textContent =
+                "⏸ Playing";
 
         }
 
@@ -444,8 +440,6 @@ audio.addEventListener(
 );
 
 audio.load();
-
-});
     
 // ======================================
 // CONTINUE LISTENING CARD
