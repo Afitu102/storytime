@@ -442,7 +442,35 @@ document.addEventListener("DOMContentLoaded", () => {
         "Continue from " +
         mins + ":" +
         (secs < 10 ? "0" + secs : secs);
+  
+    continueBtn.addEventListener("click", () => {
 
+    continueCard.style.opacity = "0";
+
+    setTimeout(() => {
+
+        continueCard.style.display = "none";
+
+    }, 300);
+
+    sessionStorage.setItem(
+        "storytime_resume",
+        "true"
+    );
+
+    if (currentPage !== story.page) {
+
+        window.location.href =
+            story.page;
+
+    } else {
+
+        audioResumeStory(story);
+
+    }
+
+});
+    
 });
 
 
