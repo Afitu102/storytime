@@ -427,13 +427,16 @@ audio.load();
   
     currentAudio = audio;
 
+audio.addEventListener("playing", () => {
+
     if (playBtn) {
 
-        playBtn.textContent =
-            "⏸ Playing";
+        playBtn.textContent = "⏸ Playing";
 
     }
 
+}, { once: true });
+    
 }
 
 // ======================================
