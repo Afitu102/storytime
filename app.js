@@ -510,4 +510,64 @@ document.addEventListener("DOMContentLoaded", () => {
     
 });
 
+// ======================================
+// RECENTLY PLAYED MANAGER V6
+// ======================================
 
+document.addEventListener("DOMContentLoaded", () => {
+
+    const recentContainer =
+        document.getElementById("recentStories");
+
+    if (!recentContainer) return;
+
+    const recent =
+        getRecentlyPlayed();
+
+    recentContainer.innerHTML = "";
+
+    if (recent.length === 0) return;
+
+    recent.forEach(story => {
+
+        const item =
+            document.createElement("div");
+
+        item.className =
+            "recent-item";
+
+        item.innerHTML = `
+            <h3>${story.title}</h3>
+            <p>${story.category}</p>
+        `;
+
+        item.addEventListener("click", () => {
+
+            sessionStorage.setItem(
+                "storytime_resume",
+                "true"
+            );
+
+            localStorage.setItem(
+                "storytime_continue",
+                story.title
+            );
+
+            if (currentPage !== story.page) {
+
+                window.location.href =
+                    story.page;
+
+            } else {
+
+                audioResumeStory(story);
+
+            }
+
+        });
+
+        recentContainer.appendChild(item);
+
+    });
+
+});
