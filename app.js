@@ -437,6 +437,15 @@ function audioResumeStory(story) {
     const card =
         cards[story.index];
 
+    // Scroll to the story first
+card.scrollIntoView({
+
+    behavior: "smooth",
+
+    block: "center"
+
+});
+  
     if (!card) return;
 
     const audio =
