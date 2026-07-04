@@ -281,6 +281,23 @@ playBtn.addEventListener("click", () => {
 
     };
 
+     // Hide Continue Listening card if user starts manually
+
+const continueCard =
+    document.getElementById("continueCard");
+
+if (continueCard) {
+
+    continueCard.style.opacity = "0";
+
+    setTimeout(() => {
+
+        continueCard.style.display = "none";
+
+    }, 300);
+
+}
+  
     const progress = getProgress(title);
 
 if (progress) {
