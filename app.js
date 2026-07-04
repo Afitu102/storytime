@@ -607,9 +607,14 @@ document.addEventListener("DOMContentLoaded", () => {
             mins + ":" +
             (secs < 10 ? "0" + secs : secs);
 
-
+   }
+             
 
 });
+       
+        recentContainer.appendChild(item);
+
+    });
 
   });      
 
