@@ -564,34 +564,54 @@ document.addEventListener("DOMContentLoaded", () => {
 
         item.addEventListener("click", () => {
 
-            sessionStorage.setItem(
-                "storytime_resume",
-                "true"
-            );
+    // Make this the current Continue story
+    localStorage.setItem(
+        "storytime_continue",
+        story.title
+    );
 
-            localStorage.setItem(
-                "storytime_continue",
-                story.title
-            );
+    // If story is on another page, go there
+    if (currentPage !== story.page) {
 
-            if (currentPage !== story.page) {
+        window.location.href = story.page;
 
-                window.location.href =
-                    story.page;
+        return;
 
-            } else {
+    }
 
-                audioResumeStory(story);
+    // Stay on this page
+    // Update the Continue Listening card only
 
-            }
+    const continueTitle =
+        document.getElementById("continueTitle");
 
-        });
+    const continueTime =
+        document.getElementById("continueTime");
 
-        recentContainer.appendChild(item);
+    const continueCard =
+        document.getElementById("continueCard");
 
-    });
+    if (continueCard)
+        continueCard.style.display = "block";
+
+    if (continueTitle)
+        continueTitle.textContent = story.title;
+
+    if (continueTime) {
+
+        const mins = Math.floor(story.time / 60);
+        const secs = Math.floor(story.time % 60);
+
+        continueTime.textContent =
+            "Continue from " +
+            mins + ":" +
+            (secs < 10 ? "0" + secs : secs);
+
+    }
 
 });
+
+  });      
 
 // ======================================
 // AUTO RESUME MANAGER V6
