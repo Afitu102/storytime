@@ -474,14 +474,23 @@ card.scrollIntoView({
 
     audio.addEventListener("playing", () => {
 
-        if (playBtn) {
+    if (playBtn) {
 
-            playBtn.textContent = "⏸ Playing";
+        playBtn.textContent = "⏸ Playing";
 
-        }
+    }
 
-    }, { once: true });
+    // Scroll to the story that is now playing
+    card.scrollIntoView({
 
+        behavior: "smooth",
+
+        block: "center"
+
+    });
+
+}, { once: true });
+    
     audio.load();
 
 }
