@@ -315,6 +315,12 @@ if (progress) {
 
     }, { once:true });
 
+    audio.addEventListener("playing", () => {
+
+        playBtn.textContent = "⏸ Playing";
+
+    }, { once:true });
+
     audio.load();
 
 } else {
