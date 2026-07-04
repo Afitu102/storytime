@@ -417,25 +417,36 @@ function audioResumeStory(story) {
     const playBtn =
         card.querySelector(".play-btn");
 
-    currentAudio = audio;
-    currentStory = story;
-
-audio.addEventListener("loadedmetadata", () => {
-
-    audio.currentTime = story.time;
-
-    audio.play();
-
+    // Leave the button as "Play"
     if (playBtn) {
 
-        playBtn.textContent = "⏸ Playing";
+        playBtn.textContent = "▶ Play";
 
     }
 
-}, { once: true });
+    currentAudio = audio;
+    currentStory = story;
 
-audio.load();
-    
+    audio.addEventListener("loadedmetadata", () => {
+
+        audio.currentTime = story.time;
+
+        audio.play();
+
+    }, { once: true });
+
+    audio.addEventListener("playing", () => {
+
+        if (playBtn) {
+
+            playBtn.textContent = "⏸ Playing";
+
+        }
+
+    }, { once: true });
+
+    audio.load();
+
 }
 
 // ======================================
