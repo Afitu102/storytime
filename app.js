@@ -296,8 +296,13 @@ if (continueCard) {
 
     }, 300);
 
-}
-  
+   }
+
+  localStorage.setItem(
+    "storytime_continue",
+    title
+);
+    
     const progress = getProgress(title);
 
 if (progress) {
