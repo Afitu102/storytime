@@ -300,10 +300,11 @@ if (progress) {
 
     audio.play();
 
-}
+audio.addEventListener("playing", () => {
 
-playBtn.textContent =
-    "⏸ Playing";
+    playBtn.textContent = "⏸ Playing";
+
+}, { once:true });
 
 });
 
