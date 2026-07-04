@@ -272,7 +272,6 @@ playBtn.addEventListener("click", () => {
     }
 
     currentAudio = audio;
-    currentStory = story;
     currentStory = {
 
         title,
@@ -429,7 +428,7 @@ function audioResumeStory(story) {
 audio.load();
   
     currentAudio = audio;
-
+    currentStory = story;
 audio.addEventListener("playing", () => {
 
     if (playBtn) {
