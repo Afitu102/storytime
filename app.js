@@ -272,7 +272,7 @@ playBtn.addEventListener("click", () => {
     }
 
     currentAudio = audio;
-
+    currentStory = story;
     currentStory = {
 
         title,
