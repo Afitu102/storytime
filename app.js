@@ -407,11 +407,16 @@ function audioResumeStory(story) {
     const playBtn =
         card.querySelector(".play-btn");
 
-    audio.currentTime =
-        story.time;
+    audio.addEventListener("loadedmetadata", () => {
+
+    audio.currentTime = story.time;
 
     audio.play();
 
+}, { once: true });
+
+audio.load();
+  
     currentAudio = audio;
 
     if (playBtn) {
