@@ -305,6 +305,8 @@ audio.addEventListener("playing", () => {
     playBtn.textContent = "⏸ Playing";
 
 }, { once:true });
+ 
+}
 
 });
 
