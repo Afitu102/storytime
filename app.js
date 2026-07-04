@@ -571,3 +571,30 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 });
+
+// ======================================
+// AUTO RESUME MANAGER V6
+// ======================================
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    if (
+        sessionStorage.getItem("storytime_resume") !== "true"
+    ) return;
+
+    sessionStorage.removeItem("storytime_resume");
+
+    const story =
+        getContinueStory();
+
+    if (!story) return;
+
+    if (currentPage !== story.page) return;
+
+    setTimeout(() => {
+
+        audioResumeStory(story);
+
+    }, 300);
+
+});
