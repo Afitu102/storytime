@@ -282,20 +282,28 @@ playBtn.addEventListener("click", () => {
 
     };
 
-    const progress =
-        getProgress(title);
+    const progress = getProgress(title);
 
-    if (progress) {
+if (progress) {
 
-        audio.currentTime =
-            progress.time;
+    audio.addEventListener("loadedmetadata", () => {
 
-    }
+        audio.currentTime = progress.time;
+
+        audio.play();
+
+    }, { once:true });
+
+    audio.load();
+
+} else {
 
     audio.play();
 
-    playBtn.textContent =
-        "⏸ Playing";
+}
+
+playBtn.textContent =
+    "⏸ Playing";
 
 });
 
