@@ -417,19 +417,14 @@ function audioResumeStory(story) {
     const playBtn =
         card.querySelector(".play-btn");
 
-    audio.addEventListener("loadedmetadata", () => {
+    currentAudio = audio;
+    currentStory = story;
+
+audio.addEventListener("loadedmetadata", () => {
 
     audio.currentTime = story.time;
 
     audio.play();
-
-}, { once: true });
-
-audio.load();
-  
-    currentAudio = audio;
-    currentStory = story;
-audio.addEventListener("playing", () => {
 
     if (playBtn) {
 
@@ -438,6 +433,8 @@ audio.addEventListener("playing", () => {
     }
 
 }, { once: true });
+
+audio.load();
     
 }
 
