@@ -764,6 +764,40 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     }
 
-    console.log(allStories);
+  // Sort newest first
+allStories.sort((a, b) => {
+
+    return new Date(b.added) - new Date(a.added);
+
+});
+
+// Keep only the newest 5
+allStories = allStories.slice(0, 5);
+
+// Display them
+allStories.forEach(story => {
+
+    const card = document.createElement("div");
+
+    card.className = "new-story-card";
+
+    card.innerHTML = `
+        <h3>${story.title}</h3>
+        <p>${story.category}</p>
+        <span class="badge">NEW</span>
+    `;
+
+    card.addEventListener("click", () => {
+
+        window.location.href =
+            story.page +
+            "?story=" +
+            encodeURIComponent(story.title);
+
+    });
+
+    container.appendChild(card);
+
+});
 
 });
