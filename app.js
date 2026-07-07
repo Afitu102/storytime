@@ -690,3 +690,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 300);
 
 });
+
+
+// ======================================
+// NEWLY ADDED MANAGER V1
+// ======================================
+
+const storyPages = [
+
+    "folktales.html",
+    "animalstories.html",
+    "fairytales.html",
+    "authors.html",
+  
+
+];
