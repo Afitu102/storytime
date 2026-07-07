@@ -771,9 +771,24 @@ allStories.sort((a, b) => {
 
 });
 
-// Keep only the newest 5
-allStories = allStories.slice(0, 5);
+// Keep only stories added within 7 days
 
+const today = new Date();
+
+allStories = allStories.filter(story => {
+
+    const addedDate = new Date(story.added);
+
+    const daysOld =
+        (today - addedDate) / (1000 * 60 * 60 * 24);
+
+    return daysOld <= 7;
+
+});
+
+// Show only the newest five
+
+allStories = allStories.slice(0, 5);
 // Display them
 allStories.forEach(story => {
 
