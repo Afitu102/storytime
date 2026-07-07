@@ -705,3 +705,65 @@ const storyPages = [
   
 
 ];
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+    const container =
+        document.getElementById("newStories");
+
+    if (!container) return;
+
+    let allStories = [];
+
+    for (const page of storyPages) {
+
+        try {
+
+            const response = await fetch(page);
+
+            const html = await response.text();
+
+            const parser = new DOMParser();
+
+            const doc =
+                parser.parseFromString(
+                    html,
+                    "text/html"
+                );
+
+            const stories =
+                doc.querySelectorAll(
+                    '.story-card[data-new="true"]'
+                );
+
+            stories.forEach(card => {
+
+                allStories.push({
+
+                    title:
+                        card.querySelector("h2").textContent,
+
+                    category:
+                        card.dataset.category,
+
+                    page:
+                        card.dataset.page,
+
+                    added:
+                        card.dataset.added
+
+                });
+
+            });
+
+        } catch (err) {
+
+            console.log(page + " not found.");
+
+        }
+
+    }
+
+    console.log(allStories);
+
+});
