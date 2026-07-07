@@ -816,3 +816,52 @@ allStories.forEach(story => {
 });
 
 });
+
+// ======================================
+// NEWLY ADDED SCROLL MANAGER
+// ======================================
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const params = new URLSearchParams(window.location.search);
+
+    const storyTitle = params.get("story");
+
+    if (!storyTitle) return;
+
+    const cards = document.querySelectorAll(".story-card");
+
+    cards.forEach(card => {
+
+        const title =
+            card.querySelector("h2").textContent.trim();
+
+        if (title === storyTitle) {
+
+            // Scroll smoothly to the story
+            card.scrollIntoView({
+
+                behavior: "smooth",
+
+                block: "center"
+
+            });
+
+            // Highlight the story briefly
+            card.style.boxShadow =
+                "0 0 25px gold";
+
+            card.style.transition =
+                "0.5s";
+
+            setTimeout(() => {
+
+                card.style.boxShadow = "";
+
+            }, 3000);
+
+        }
+
+    });
+
+});
