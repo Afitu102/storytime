@@ -455,3 +455,27 @@ margin-left:8px;
 display:inline-block;
 
 }
+
+.new-story-highlight{
+
+    animation: glowStory 1s infinite alternate;
+
+    border:2px solid gold;
+
+}
+
+@keyframes glowStory{
+
+from{
+
+box-shadow:0 0 5px gold;
+
+}
+
+to{
+
+box-shadow:0 0 20px gold;
+
+}
+
+}
