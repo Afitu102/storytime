@@ -865,7 +865,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             setTimeout(() => {
 
-                card.style.boxShadow = "";
+                card.classList.remove("new-story-highlight");
 
             }, 3000);
 
