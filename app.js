@@ -847,7 +847,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
             });
 
+             // Make this story the active one
 
+            const playBtn =
+           card.querySelector(".play-btn");
+
+             if (playBtn) {
+
+            playBtn.focus();
+
+}
             
             // Highlight the story briefly
             card.style.boxShadow =
