@@ -859,9 +859,7 @@ document.addEventListener("DOMContentLoaded", () => {
 }
             
             // Highlight the story briefly
-            card.style.boxShadow =
-                "0 0 25px gold";
-
+            card.classList.add("new-story-highlight");
             card.style.transition =
                 "0.5s";
 
