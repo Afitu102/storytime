@@ -847,6 +847,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             });
 
+
+            
             // Highlight the story briefly
             card.style.boxShadow =
                 "0 0 25px gold";
