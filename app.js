@@ -874,3 +874,203 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 });
+
+
+/* ==========================
+   STORY CHAPTER READER
+========================== */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const chapters = document.querySelectorAll(".chapter");
+
+    if (chapters.length === 0) return;
+
+    const prevBtn = document.getElementById("prevChapter");
+    const nextBtn = document.getElementById("nextChapter");
+
+    const storyID = document.title.replace(/\s+/g, "_");
+
+    // Load saved chapter (convert chapter number back to index)
+    let currentChapter =
+        (parseInt(localStorage.getItem(storyID)) || 1) - 1;
+
+    function showChapter(index){
+
+        chapters.forEach((chapter,i)=>{
+
+            chapter.classList.toggle("active", i===index);
+
+        });
+
+        window.scrollTo({
+            top:0,
+            behavior:"smooth"
+        });
+
+        // Save chapter number (1,2,3...)
+        localStorage.setItem(storyID, index + 1);
+
+        // Update Recently Read immediately
+        if(typeof Reader !== "undefined"){
+            Reader.saveStory();
+        }
+
+        prevBtn.style.visibility =
+            index===0 ? "hidden" : "visible";
+
+        nextBtn.style.display =
+            index===chapters.length-1 ? "none" : "inline-block";
+
+    }
+
+// Make sure saved chapter is within range
+currentChapter = Math.max(
+    0,
+    Math.min(currentChapter, chapters.length - 1)
+);
+
+showChapter(currentChapter);
+
+nextBtn.addEventListener("click", () => {
+
+    if (currentChapter < chapters.length - 1) {
+
+        currentChapter++;
+
+        showChapter(currentChapter);
+
+    }
+
+});
+
+
+    prevBtn.addEventListener("click",()=>{
+
+        if(currentChapter>0){
+
+            currentChapter--;
+
+            showChapter(currentChapter);
+
+        }
+
+    });
+
+});
+
+
+/* ======================================
+   STORYTIME READER ENGINE
+====================================== */
+
+const Reader = {
+
+saveStory(){
+
+const title = document.body.dataset.storyTitle || document.title;
+const image = document.body.dataset.storyImage || "";
+const category = document.body.dataset.storyCategory || "";
+const page = window.location.pathname.split("/").pop();
+const storyID =
+document.title.replace(/\s+/g,"_");
+
+const chapter =
+parseInt(localStorage.getItem(storyID)) || 1;
+let recent=
+JSON.parse(localStorage.getItem("recentRead"))||[];
+
+recent = [{
+
+title,
+
+image,
+
+category,
+
+page,
+
+chapter,
+
+time: Date.now()
+
+}];
+
+localStorage.setItem(
+
+"recentRead",
+
+JSON.stringify(recent)
+
+);
+
+},
+
+loadRecent(){
+
+const box=document.getElementById("recentReadStories");
+
+if(!box)return;
+
+const recent=
+
+JSON.parse(localStorage.getItem("recentRead"))||[];
+
+if(recent.length===0){
+
+box.innerHTML="<p>No stories read yet.</p>";
+
+return;
+
+}
+
+box.innerHTML="";
+
+recent.forEach(story=>{
+
+box.innerHTML+=`
+
+<a href="${story.page}"
+
+class="recent-card">
+
+<img src="${story.image}"
+
+style="width:100%;height:130px;object-fit:cover;border-radius:15px;">
+
+<h3>${story.title}</h3>
+
+<p>${story.category}</p>
+
+<p>Continue from Chapter ${story.chapter}</p>
+
+</a>
+
+`;
+
+});
+
+}
+
+};
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+Reader.loadRecent();
+
+});
+
+/* ======================================
+   AUTO DETECT STORY PAGE
+====================================== */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    // If this page is a story page...
+    if (document.body.dataset.storyTitle) {
+
+        Reader.saveStory();
+
+    }
+
+});
