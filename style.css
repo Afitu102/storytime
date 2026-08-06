@@ -479,3 +479,278 @@ box-shadow:0 0 20px gold;
 }
 
 }
+
+
+/* ======================================
+   STORY READER PAGE
+====================================== */
+
+.story-header{
+
+    max-width:1000px;
+
+    margin:auto;
+
+    padding:20px;
+
+}
+
+.story-container{
+
+    max-width:850px;
+
+    margin:auto;
+
+    padding:20px;
+
+}
+
+.story-image-box{
+
+    margin:25px 0;
+
+    text-align:center;
+
+}
+
+.story-image-box img{
+
+    width:100%;
+
+    border-radius:20px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.35);
+
+}
+
+.story-content{
+
+    background:var(--card);
+
+    border:1px solid var(--border);
+
+    border-radius:20px;
+
+    padding:30px;
+
+    margin-top:25px;
+
+    line-height:2;
+
+    font-size:19px;
+
+    color:var(--text);
+
+}
+
+.story-content p{
+
+    margin-bottom:25px;
+
+}
+
+.story-category{
+
+    color:var(--text2);
+
+    font-size:15px;
+
+    margin-top:8px;
+
+}
+
+.story-quote{
+
+    font-style:italic;
+
+    color:#f59e0b;
+
+    margin-top:15px;
+
+    font-size:18px;
+
+}
+
+.story-ending{
+
+    text-align:center;
+
+    margin-top:40px;
+
+    margin-bottom:30px;
+
+}
+
+.story-ending h2{
+
+    color:var(--accent);
+
+}
+
+.story-navigation{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-top:40px;
+
+    gap:15px;
+
+}
+
+.story-navigation a{
+
+    background:var(--card2);
+
+    color:var(--text);
+
+    text-decoration:none;
+
+    padding:12px 18px;
+
+    border-radius:12px;
+
+    transition:.3s;
+
+}
+
+.story-navigation a:hover{
+
+    background:#2563eb;
+
+    color:white;
+
+}
+
+
+.chapter{
+
+display:none;
+
+animation:fadeSlide .45s ease;
+
+}
+
+.chapter.active{
+
+display:block;
+
+}
+
+.chapter-controls{
+
+display:flex;
+
+justify-content:space-between;
+
+margin-top:40px;
+
+margin-bottom:30px;
+
+}
+
+.chapter-controls button{
+
+padding:12px 20px;
+
+border:none;
+
+border-radius:12px;
+
+background:#2563eb;
+
+color:white;
+
+font-size:16px;
+
+cursor:pointer;
+
+}
+
+.chapter-controls button:hover{
+
+opacity:.9;
+
+}
+
+@keyframes fadeSlide{
+
+from{
+
+opacity:0;
+
+transform:translateX(25px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:translateX(0);
+
+}
+
+}
+
+to{
+
+box-shadow:0 0 20px gold;
+
+}
+
+}
+
+.story-content{
+    max-width:800px;
+    margin:30px auto;
+    padding:0 20px;
+    line-height:1.9;
+    font-size:18px;
+}
+
+.story-content p{
+    margin-bottom:20px;
+}
+
+.chapter h2{
+    margin-bottom:20px;
+    font-size:30px;
+    color:var(--accent);
+ }
+
+
+.story-image-box{
+
+max-width:700px;
+
+margin:25px auto;
+
+}
+
+.story-image-box img{
+
+width:100%;
+
+height:260px;
+
+object-fit:cover;
+
+display:block;
+
+border-radius:20px;
+
+box-shadow:0 8px 25px rgba(0,0,0,.25);
+
+}
+
+.chapter{
+    display:none;
+}
+
+.chapter.active{
+    display:block;
+   }
