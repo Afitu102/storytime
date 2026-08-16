@@ -1555,3 +1555,396 @@ body {
     }
 
    }
+
+
+
+
+
+/* =====================================================
+   STORYTIME — GLOBAL FONT & SPACING FIX
+   Paste this at the VERY BOTTOM of style.css
+===================================================== */
+
+/* ---------- GLOBAL FONT ---------- */
+
+html,
+body,
+button,
+input,
+textarea,
+select {
+    font-family: Georgia, "Times New Roman", serif;
+}
+
+
+/* ---------- BODY ---------- */
+
+body {
+    line-height: 1.6;
+}
+
+
+/* ---------- HOME HEADER ---------- */
+
+.home-header {
+    text-align: center;
+    padding: 65px 20px 55px;
+}
+
+.home-logo {
+    margin: 0 0 28px;
+    line-height: 1.15;
+}
+
+.home-header .theme-btn {
+    margin-bottom: 28px;
+}
+
+.home-subtitle {
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.65;
+}
+
+
+/* ---------- MAIN CONTAINER ---------- */
+
+.home-container {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 30px 80px;
+}
+
+
+/* ---------- WELCOME ---------- */
+
+.welcome-box {
+    margin-bottom: 55px;
+    padding: 34px 38px;
+}
+
+.welcome-box h2 {
+    margin-bottom: 12px;
+    line-height: 1.3;
+}
+
+.welcome-box p {
+    line-height: 1.7;
+}
+
+
+/* ---------- NEWLY ADDED ---------- */
+
+.newly-added {
+    margin-bottom: 48px;
+}
+
+.newly-added h2 {
+    margin-bottom: 25px;
+}
+
+
+/* ---------- RECENTLY PLAYED ---------- */
+
+.recent-section {
+    margin-bottom: 58px;
+}
+
+.recent-section h2 {
+    margin-bottom: 25px;
+}
+
+#recentStories {
+    line-height: 1.7;
+}
+
+#recentStories > * {
+    margin-bottom: 20px;
+}
+
+
+/* ---------- CATEGORY HEADING ---------- */
+
+.category-heading {
+    margin-top: 0;
+    margin-bottom: 28px;
+    line-height: 1.3;
+}
+
+
+/* ---------- CATEGORY GRID ---------- */
+
+.category-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 28px;
+}
+
+
+/* ---------- CATEGORY CARDS ---------- */
+
+.home-category-card {
+    display: block;
+    padding: 34px 38px;
+    border-radius: 18px;
+    text-decoration: none;
+}
+
+.home-category-card .category-icon {
+    display: block;
+    margin-bottom: 25px;
+    font-size: 42px;
+}
+
+.home-category-card h3 {
+    margin-bottom: 10px;
+    line-height: 1.35;
+}
+
+.home-category-card p {
+    line-height: 1.65;
+}
+
+
+/* =====================================================
+   READ STORIES SECTION
+===================================================== */
+
+.read-stories-section {
+    margin-top: 75px;
+    padding-top: 10px;
+}
+
+.read-stories-section .category-heading {
+    margin-bottom: 28px;
+}
+
+
+/* =====================================================
+   VIDEO SECTION
+===================================================== */
+
+.video-page {
+    padding-top: 55px;
+}
+
+.page-intro {
+    padding-bottom: 50px;
+}
+
+.page-intro h1 {
+    margin-bottom: 18px;
+}
+
+.page-intro p {
+    line-height: 1.75;
+}
+
+.video-library {
+    gap: 42px;
+}
+
+.video-card {
+    margin-bottom: 0;
+}
+
+.video-details {
+    padding: 22px 24px 25px;
+}
+
+.video-details h2 {
+    margin-bottom: 10px;
+}
+
+.video-details p {
+    line-height: 1.75;
+}
+
+
+/* =====================================================
+   CHANNEL SECTION
+===================================================== */
+
+.channel-section {
+    margin-top: 55px;
+    padding: 28px;
+}
+
+.channel-content h2 {
+    margin-bottom: 9px;
+}
+
+.channel-content p {
+    line-height: 1.7;
+}
+
+
+/* =====================================================
+   GENERAL SECTIONS
+===================================================== */
+
+section {
+    margin-bottom: 45px;
+}
+
+
+/* =====================================================
+   HEADINGS
+===================================================== */
+
+h1,
+h2,
+h3,
+h4 {
+    line-height: 1.3;
+}
+
+
+/* =====================================================
+   LIGHT MODE
+   Keep the same spacing, only change colors.
+===================================================== */
+
+body.light-mode {
+    background: #ffffff;
+    color: #111827;
+}
+
+body.light-mode .welcome-box,
+body.light-mode .home-category-card,
+body.light-mode .video-card,
+body.light-mode .channel-section {
+    background: #ffffff;
+}
+
+
+/* =====================================================
+   DARK MODE
+===================================================== */
+
+body:not(.light-mode) {
+    background: #111827;
+    color: #ffffff;
+}
+
+body:not(.light-mode) .welcome-box,
+body:not(.light-mode) .home-category-card,
+body:not(.light-mode) .video-card,
+body:not(.light-mode) .channel-section {
+    background: #202938;
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 600px) {
+
+    .home-header {
+        padding: 48px 18px 42px;
+    }
+
+    .home-logo {
+        margin-bottom: 25px;
+        font-size: 38px;
+    }
+
+    .home-header .theme-btn {
+        margin-bottom: 25px;
+    }
+
+    .home-subtitle {
+        font-size: 16px;
+        line-height: 1.65;
+    }
+
+    .home-container {
+        padding:
+            0 30px 70px;
+    }
+
+    .welcome-box {
+        margin-bottom: 48px;
+        padding: 30px 28px;
+    }
+
+    .newly-added {
+        margin-bottom: 42px;
+    }
+
+    .recent-section {
+        margin-bottom: 52px;
+    }
+
+    .category-heading {
+        margin-bottom: 24px;
+    }
+
+    .category-grid {
+        gap: 25px;
+    }
+
+    .home-category-card {
+        padding: 30px 28px;
+        border-radius: 17px;
+    }
+
+    .home-category-card .category-icon {
+        margin-bottom: 23px;
+        font-size: 38px;
+    }
+
+    .read-stories-section {
+        margin-top: 65px;
+    }
+
+    .video-page {
+        padding:
+            38px 20px 100px;
+    }
+
+    .page-intro {
+        padding-bottom: 40px;
+    }
+
+    .video-library {
+        gap: 32px;
+    }
+
+    .video-details {
+        padding:
+            19px 20px 22px;
+    }
+
+    .channel-section {
+        margin-top: 45px;
+        padding: 23px;
+    }
+}
+
+
+/* =====================================================
+   SMALL PHONES
+===================================================== */
+
+@media (max-width: 380px) {
+
+    .home-container {
+        padding-left: 22px;
+        padding-right: 22px;
+    }
+
+    .home-logo {
+        font-size: 34px;
+    }
+
+    .home-category-card {
+        padding: 27px 24px;
+    }
+
+    .welcome-box {
+        padding: 27px 24px;
+    }
+}
