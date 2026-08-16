@@ -1074,3 +1074,211 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 });
+
+
+
+
+/* =====================================================
+   STORYTIME
+   YOUTUBE VIDEO PAGE
+   VIDEO FUNCTIONALITY ONLY
+
+   IMPORTANT:
+   This code does NOT save videos to Recently Read.
+   It does NOT control the StoryTime theme.
+===================================================== */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const videoCards =
+        document.querySelectorAll(".video-card");
+
+
+    /* =================================================
+       OPEN VIDEO
+    ================================================= */
+
+    videoCards.forEach(function (card) {
+
+        card.addEventListener("click", function () {
+
+            /* Stop other videos first */
+            stopAllOtherVideos(card);
+
+
+            /* Don't create another player
+               if this video is already open */
+            if (
+                card.querySelector(
+                    ".youtube-player-container"
+                )
+            ) {
+                return;
+            }
+
+
+            /* Get YouTube ID */
+            const videoId =
+                card.getAttribute("data-video-id");
+
+
+            if (!videoId) {
+                console.warn(
+                    "YouTube video ID is missing."
+                );
+
+                return;
+            }
+
+
+            /* Get thumbnail */
+            const thumbnail =
+                card.querySelector(".video-thumbnail");
+
+
+            if (!thumbnail) {
+                return;
+            }
+
+
+            /* Create player container */
+            const playerContainer =
+                document.createElement("div");
+
+            playerContainer.className =
+                "youtube-player-container";
+
+
+            /* Create iframe */
+            const iframe =
+                document.createElement("iframe");
+
+
+            iframe.src =
+                "https://www.youtube-nocookie.com/embed/"
+                + videoId
+                + "?autoplay=1&rel=0&enablejsapi=1";
+
+
+            iframe.title =
+                "StoryTime African Folktales Video";
+
+
+            iframe.setAttribute(
+                "allow",
+                "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            );
+
+
+            iframe.setAttribute(
+                "allowfullscreen",
+                ""
+            );
+
+
+            iframe.setAttribute(
+                "loading",
+                "lazy"
+            );
+
+
+            /* Put iframe inside player */
+            playerContainer.appendChild(
+                iframe
+            );
+
+
+            /* Replace thumbnail */
+            thumbnail.innerHTML = "";
+
+            thumbnail.appendChild(
+                playerContainer
+            );
+
+        });
+
+    });
+
+
+    /* =================================================
+       STOP OTHER VIDEOS
+    ================================================= */
+
+    function stopAllOtherVideos(currentCard) {
+
+        const players =
+            document.querySelectorAll(
+                ".youtube-player-container"
+            );
+
+
+        players.forEach(function (player) {
+
+            const card =
+                player.closest(".video-card");
+
+
+            if (card === currentCard) {
+                return;
+            }
+
+
+            const iframe =
+                player.querySelector("iframe");
+
+
+            if (iframe) {
+
+                iframe.contentWindow.postMessage(
+                    JSON.stringify({
+                        event: "command",
+                        func: "pauseVideo",
+                        args: []
+                    }),
+                    "*"
+                );
+
+            }
+
+        });
+
+    }
+
+
+    /* =================================================
+       PAUSE VIDEOS WHEN PAGE IS HIDDEN
+    ================================================= */
+
+    document.addEventListener(
+        "visibilitychange",
+        function () {
+
+            if (
+                document.visibilityState === "hidden"
+            ) {
+
+                const players =
+                    document.querySelectorAll(
+                        ".youtube-player-container iframe"
+                    );
+
+
+                players.forEach(function (iframe) {
+
+                    iframe.contentWindow.postMessage(
+                        JSON.stringify({
+                            event: "command",
+                            func: "pauseVideo",
+                            args: []
+                        }),
+                        "*"
+                    );
+
+                });
+
+            }
+
+        }
+    );
+
+});
