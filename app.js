@@ -1060,13 +1060,26 @@ Reader.loadRecent();
 
 });
 
+
 /* ======================================
-   AUTO DETECT STORY PAGE
+   AUTO DETECT STORY / ROMANTIC NOVEL PAGE
 ====================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    // If this page is a story page...
+    // Romantic Novel
+    if (
+        document.body.dataset.category === "Romantic Novels" &&
+        document.body.dataset.storyTitle
+    ) {
+
+        RomanticReader.saveNovel();
+
+        return;
+    }
+
+
+    // Normal Story
     if (document.body.dataset.storyTitle) {
 
         Reader.saveStory();
@@ -1074,7 +1087,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 });
-
 
 
 
