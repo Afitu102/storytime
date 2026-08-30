@@ -1440,47 +1440,16 @@ const RomanticReader = {
 
 
 /* ======================================
-   AUTO DETECT STORY / ROMANTIC NOVEL
+   AUTO DETECT STORY PAGE
 ====================================== */
 
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
+document.addEventListener("DOMContentLoaded", () => {
 
-        /*
-           ROMANTIC NOVEL
-        */
+    // If this page is a story page...
+    if (document.body.dataset.storyTitle) {
 
-        if (
-            document.body.dataset.category ===
-                "Romantic Novels"
-            &&
-            document.body.dataset.storyTitle
-        ) {
-
-            RomanticReader.saveNovel();
-
-            return;
-
-        }
-
-
-        /*
-           NORMAL STORY
-           Leave the existing system untouched.
-        */
-
-        if (
-            document.body.dataset.storyTitle
-        ) {
-
-            Reader.saveStory();
-
-        }
+        Reader.saveStory();
 
     }
-);
- 
 
-
-        
+});
