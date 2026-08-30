@@ -1296,151 +1296,191 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-
- /* ======================================
-    ROMANTIC NOVELS — RECENTLY READ
- ====================================== */
+/* ======================================
+   ROMANTIC NOVELS — RECENTLY READ
+====================================== */
 
 const RomanticReader = {
 
-saveNovel(){
+    saveNovel() {
 
-    const title =
-        document.body.dataset.storyTitle ||
-        document.title;
+        const title =
+            document.body.dataset.storyTitle ||
+            document.title;
 
-    const image =
-        document.body.dataset.storyImage || "";
+        const image =
+            document.body.dataset.storyImage || "";
 
-    const category =
-        document.body.dataset.category ||
-        "Romantic Novels";
+        const category =
+            document.body.dataset.category ||
+            "Romantic Novels";
 
-    const page =
-        window.location.pathname.split("/").pop();
+        const page =
+            window.location.pathname.split("/").pop();
 
-    const novelID =
-        document.title.replace(/\s+/g, "_");
+        /*
+           IMPORTANT:
+           Get the exact chapter currently being opened.
+        */
 
-    const chapter =
-        parseInt(localStorage.getItem(novelID)) || 1;
-
-    let recent =
-        JSON.parse(
-            localStorage.getItem("recentReadRomanticNovel")
-        ) || [];
-
-
-    /* Keep ONLY the most recently read novel */
-
-    recent = [{
-
-        title,
-
-        image,
-
-        category,
-
-        page,
-
-        chapter,
-
-        time: Date.now()
-
-    }];
+        const chapter =
+            parseInt(
+                document.body.dataset.chapter
+            ) || 1;
 
 
-    localStorage.setItem(
-
-        "recentReadRomanticNovel",
-
-        JSON.stringify(recent)
-
-    );
-
-},
+        let recent =
+            JSON.parse(
+                localStorage.getItem(
+                    "recentReadRomanticNovel"
+                )
+            ) || [];
 
 
-loadNovel(){
+        /*
+           Keep ONLY ONE recently read novel.
+           Opening another chapter updates
+           the existing card.
+        */
 
-    const box =
-        document.getElementById(
-            "recentReadNovels"
+        recent = [{
+
+            title,
+
+            image,
+
+            category,
+
+            page,
+
+            chapter,
+
+            time: Date.now()
+
+        }];
+
+
+        localStorage.setItem(
+
+            "recentReadRomanticNovel",
+
+            JSON.stringify(recent)
+
         );
 
-    if(!box)return;
+    },
 
 
-    const recent =
-        JSON.parse(
-            localStorage.getItem(
-                "recentReadRomanticNovel"
-            )
-        ) || [];
+    loadNovel() {
+
+        const box =
+            document.getElementById(
+                "recentReadNovels"
+            );
+
+        if (!box) return;
 
 
-    if(recent.length === 0){
-
-        box.innerHTML =
-            "<p>No novels read yet.</p>";
-
-        return;
-
-    }
+        const recent =
+            JSON.parse(
+                localStorage.getItem(
+                    "recentReadRomanticNovel"
+                )
+            ) || [];
 
 
-    box.innerHTML = "";
+        if (recent.length === 0) {
+
+            box.innerHTML =
+                "<p>No novels read yet.</p>";
+
+            return;
+
+        }
 
 
-    recent.forEach(novel => {
+        const novel = recent[0];
 
-        box.innerHTML += `
 
-        <a href="${novel.page}"
-           class="recent-card">
+        box.innerHTML = `
 
-            <img
-                src="${novel.image}"
-                style="
-                    width:100%;
-                    height:130px;
-                    object-fit:cover;
-                    border-radius:15px;
-                "
-            >
+            <a href="${novel.page}"
+               class="recent-card">
 
-            <h3>
-                ${novel.title}
-            </h3>
+                <img
+                    src="${novel.image}"
+                    style="
+                        width:100%;
+                        height:130px;
+                        object-fit:cover;
+                        border-radius:15px;
+                    "
+                >
 
-            <p>
-                🌹 Romantic Novel
-            </p>
+                <h3>
+                    ${novel.title}
+                </h3>
 
-            <p>
-                Continue from Chapter
-                ${novel.chapter}
-            </p>
+                <p>
+                    🌹 Romantic Novel
+                </p>
 
-        </a>
+                <p>
+                    Continue from Chapter
+                    ${novel.chapter}
+                </p>
+
+            </a>
 
         `;
 
-    });
-
-}
+    }
 
 };
 
 
-/* Load Romantic Novel Recently Read */
+/* ======================================
+   AUTO DETECT STORY / ROMANTIC NOVEL
+====================================== */
 
 document.addEventListener(
     "DOMContentLoaded",
     () => {
 
-        RomanticReader.loadNovel();
+        /*
+           ROMANTIC NOVEL
+        */
+
+        if (
+            document.body.dataset.category ===
+                "Romantic Novels"
+            &&
+            document.body.dataset.storyTitle
+        ) {
+
+            RomanticReader.saveNovel();
+
+            return;
+
+        }
+
+
+        /*
+           NORMAL STORY
+           Leave the existing system untouched.
+        */
+
+        if (
+            document.body.dataset.storyTitle
+        ) {
+
+            Reader.saveStory();
+
+        }
 
     }
 );
+ 
 
+
+        
