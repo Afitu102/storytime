@@ -1440,16 +1440,47 @@ const RomanticReader = {
 
 
 /* ======================================
-   AUTO DETECT STORY PAGE
+   AUTO DETECT STORY / ROMANTIC NOVEL
 ====================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    // If this page is a story page...
+    /*
+       ROMANTIC NOVEL
+       Send Romantic Novels to their
+       separate Recently Read system.
+    */
+
+    if (
+        document.body.dataset.category === "Romantic Novels" &&
+        document.body.dataset.storyTitle
+    ) {
+
+        RomanticReader.saveNovel();
+
+        return;
+    }
+
+
+    /*
+       NORMAL STORIES
+       Keep the original Reader system.
+    */
+
     if (document.body.dataset.storyTitle) {
 
         Reader.saveStory();
 
     }
+
+});
+
+/* ======================================
+   LOAD ROMANTIC NOVEL RECENTLY READ
+====================================== */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    RomanticReader.loadNovel();
 
 });
