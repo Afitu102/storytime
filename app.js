@@ -1864,7 +1864,6 @@ document.addEventListener(
 );
 
 
-
 /* ======================================
    ROMANTIC NOVELS — RECENTLY READ
 ====================================== */
@@ -1873,96 +1872,55 @@ const RomanticReader = {
 
     saveNovel() {
 
+        const body = document.body;
+
+        if (
+            body.dataset.category !==
+            "Romantic Novels"
+        ) {
+            return;
+        }
+
         const title =
-            document.body.dataset.storyTitle ||
+            body.dataset.storyTitle ||
             document.title;
 
-
         const image =
-            document.body.dataset.storyImage ||
+            body.dataset.storyImage ||
             "";
 
-
         const category =
-            document.body.dataset.category ||
+            body.dataset.storyCategory ||
             "Romantic Novels";
-
 
         const page =
             window.location.pathname
                 .split("/")
                 .pop();
 
-
         /*
-         * Permanent novel ID.
-         * All chapters of the same novel
-         * share this ID.
+         * Get the exact chapter from the page.
          */
-        const novelID =
-            "novelChapter_" +
-            title.trim().replace(/\s+/g, "_");
-
-
-        /*
-         * IMPORTANT:
-         * Use data-chapter directly.
-         */
-        let chapter =
+        const chapter =
             parseInt(
-                document.body.dataset.chapter
-            );
-
-
-        /*
-         * Fallback only if data-chapter
-         * doesn't exist.
-         */
-        if (isNaN(chapter)) {
-
-            chapter =
-                parseInt(
-                    localStorage.getItem(
-                        novelID
-                    )
-                ) || 1;
-
-        }
-
+                body.dataset.chapter
+            ) || 1;
 
         /*
-         * Keep ONLY one recently-read novel.
+         * Keep ONLY ONE recently-read novel.
          */
         const recent = [{
-
             title: title,
-
             image: image,
-
             category: category,
-
             page: page,
-
             chapter: chapter,
-
             time: Date.now()
-
         }];
-
 
         localStorage.setItem(
             "recentReadRomanticNovel",
             JSON.stringify(recent)
-        );
-
-
-        /*
-         * Also remember the current chapter
-         * for this novel.
-         */
-        localStorage.setItem(
-            novelID,
-            chapter
         );
 
     },
@@ -1975,13 +1933,9 @@ const RomanticReader = {
                 "recentReadNovels"
             );
 
-
         if (!box) {
-
             return;
-
         }
-
 
         const recent =
             JSON.parse(
@@ -1990,20 +1944,16 @@ const RomanticReader = {
                 )
             ) || [];
 
-
         if (recent.length === 0) {
 
             box.innerHTML =
                 "<p>No novels read yet.</p>";
 
             return;
-
         }
-
 
         const novel =
             recent[0];
-
 
         box.innerHTML = `
 
@@ -2038,23 +1988,9 @@ const RomanticReader = {
             </a>
 
         `;
-
     }
 
 };
-
-
-/*
- * Load Romantic Novel Recently Read.
- */
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
-
-        RomanticReader.loadNovel();
-
-    }
-);
 
 
 
