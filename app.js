@@ -884,80 +884,187 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const chapters = document.querySelectorAll(".chapter");
 
-    if (chapters.length === 0) return;
+    if (chapters.length === 0) {
+        return;
+    }
 
     const prevBtn = document.getElementById("prevChapter");
     const nextBtn = document.getElementById("nextChapter");
 
-    const storyID = document.title.replace(/\s+/g, "_");
+    /*
+     * Use the story title as the permanent storage ID.
+     * This keeps all chapters of the same story connected.
+     */
+    const storyTitle =
+        document.body.dataset.storyTitle ||
+        document.title;
 
-    // Load saved chapter (convert chapter number back to index)
+    const storyID =
+        "storyChapter_" +
+        storyTitle.trim().replace(/\s+/g, "_");
+
+
+    /*
+     * Read saved chapter.
+     * If the page itself has data-chapter,
+     * use that chapter number first.
+     */
+    let savedChapter =
+        parseInt(
+            document.body.dataset.chapter
+        );
+
+    if (isNaN(savedChapter)) {
+
+        savedChapter =
+            parseInt(
+                localStorage.getItem(storyID)
+            ) || 1;
+
+    }
+
+
     let currentChapter =
-        (parseInt(localStorage.getItem(storyID)) || 1) - 1;
+        savedChapter - 1;
 
-    function showChapter(index){
 
-        chapters.forEach((chapter,i)=>{
+    /*
+     * Make sure the chapter is within range.
+     */
+    currentChapter = Math.max(
+        0,
+        Math.min(
+            currentChapter,
+            chapters.length - 1
+        )
+    );
 
-            chapter.classList.toggle("active", i===index);
+
+    function showChapter(index) {
+
+        chapters.forEach((chapter, i) => {
+
+            chapter.classList.toggle(
+                "active",
+                i === index
+            );
 
         });
+
 
         window.scrollTo({
-            top:0,
-            behavior:"smooth"
+            top: 0,
+            behavior: "smooth"
         });
 
-        // Save chapter number (1,2,3...)
-        localStorage.setItem(storyID, index + 1);
 
-        // Update Recently Read immediately
-        if(typeof Reader !== "undefined"){
+        /*
+         * Save chapter number.
+         */
+        localStorage.setItem(
+            storyID,
+            index + 1
+        );
+
+
+        /*
+         * Update Recently Read.
+         */
+        if (
+            typeof Reader !== "undefined" &&
+            typeof Reader.saveStory === "function"
+        ) {
+
             Reader.saveStory();
+
         }
 
-        prevBtn.style.visibility =
-            index===0 ? "hidden" : "visible";
 
-        nextBtn.style.display =
-            index===chapters.length-1 ? "none" : "inline-block";
+        /*
+         * Previous button.
+         */
+        if (prevBtn) {
+
+            prevBtn.style.visibility =
+                index === 0
+                    ? "hidden"
+                    : "visible";
+
+        }
+
+
+        /*
+         * Next button.
+         */
+        if (nextBtn) {
+
+            nextBtn.style.display =
+                index === chapters.length - 1
+                    ? "none"
+                    : "inline-block";
+
+        }
 
     }
 
-// Make sure saved chapter is within range
-currentChapter = Math.max(
-    0,
-    Math.min(currentChapter, chapters.length - 1)
-);
 
-showChapter(currentChapter);
+    showChapter(currentChapter);
 
-nextBtn.addEventListener("click", () => {
 
-    if (currentChapter < chapters.length - 1) {
+    /*
+     * NEXT CHAPTER
+     */
+    if (nextBtn) {
 
-        currentChapter++;
+        nextBtn.addEventListener(
+            "click",
+            () => {
 
-        showChapter(currentChapter);
+                if (
+                    currentChapter <
+                    chapters.length - 1
+                ) {
+
+                    currentChapter++;
+
+                    showChapter(
+                        currentChapter
+                    );
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /*
+     * PREVIOUS CHAPTER
+     */
+    if (prevBtn) {
+
+        prevBtn.addEventListener(
+            "click",
+            () => {
+
+                if (currentChapter > 0) {
+
+                    currentChapter--;
+
+                    showChapter(
+                        currentChapter
+                    );
+
+                }
+
+            }
+        );
 
     }
 
 });
 
-
-    prevBtn.addEventListener("click",()=>{
-
-        if(currentChapter>0){
-
-            currentChapter--;
-
-            showChapter(currentChapter);
-
-        }
-
-    });
-
-});
 
 
 /* ======================================
@@ -966,127 +1073,236 @@ nextBtn.addEventListener("click", () => {
 
 const Reader = {
 
-saveStory(){
+    saveStory() {
 
-const title = document.body.dataset.storyTitle || document.title;
-const image = document.body.dataset.storyImage || "";
-const category = document.body.dataset.storyCategory || "";
-const page = window.location.pathname.split("/").pop();
-const storyID =
-document.title.replace(/\s+/g,"_");
+        /*
+         * Do NOT save Romantic Novels here.
+         */
+        if (
+            document.body.dataset.category ===
+            "Romantic Novels"
+        ) {
 
-const chapter =
-parseInt(localStorage.getItem(storyID)) || 1;
-let recent=
-JSON.parse(localStorage.getItem("recentRead"))||[];
+            return;
 
-recent = [{
+        }
 
-title,
 
-image,
+        const title =
+            document.body.dataset.storyTitle ||
+            document.title;
 
-category,
 
-page,
+        const image =
+            document.body.dataset.storyImage ||
+            "";
 
-chapter,
 
-time: Date.now()
+        const category =
+            document.body.dataset.storyCategory ||
+            "";
 
-}];
 
-localStorage.setItem(
+        const page =
+            window.location.pathname
+                .split("/")
+                .pop();
 
-"recentRead",
 
-JSON.stringify(recent)
+        /*
+         * Permanent ID based on story title.
+         * All chapters of the same story share this ID.
+         */
+        const storyID =
+            "storyChapter_" +
+            title.trim().replace(/\s+/g, "_");
 
-);
 
-},
+        /*
+         * Use data-chapter when available.
+         */
+        let chapter =
+            parseInt(
+                document.body.dataset.chapter
+            );
 
-loadRecent(){
 
-const box=document.getElementById("recentReadStories");
+        if (isNaN(chapter)) {
 
-if(!box)return;
+            chapter =
+                parseInt(
+                    localStorage.getItem(storyID)
+                ) || 1;
 
-const recent=
+        }
 
-JSON.parse(localStorage.getItem("recentRead"))||[];
 
-if(recent.length===0){
+        /*
+         * Keep ONLY one recently-read story.
+         */
+        const recent = [{
 
-box.innerHTML="<p>No stories read yet.</p>";
+            title: title,
 
-return;
+            image: image,
 
-}
+            category: category,
 
-box.innerHTML="";
+            page: page,
 
-recent.forEach(story=>{
+            chapter: chapter,
 
-box.innerHTML+=`
+            time: Date.now()
 
-<a href="${story.page}"
+        }];
 
-class="recent-card">
 
-<img src="${story.image}"
+        localStorage.setItem(
+            "recentRead",
+            JSON.stringify(recent)
+        );
 
-style="width:100%;height:130px;object-fit:cover;border-radius:15px;">
+    },
 
-<h3>${story.title}</h3>
 
-<p>${story.category}</p>
+    loadRecent() {
 
-<p>Continue from Chapter ${story.chapter}</p>
+        const box =
+            document.getElementById(
+                "recentReadStories"
+            );
 
-</a>
 
-`;
+        if (!box) {
+            return;
+        }
 
-});
 
-}
+        const recent =
+            JSON.parse(
+                localStorage.getItem(
+                    "recentRead"
+                )
+            ) || [];
+
+
+        if (recent.length === 0) {
+
+            box.innerHTML =
+                "<p>No stories read yet.</p>";
+
+            return;
+
+        }
+
+
+        const story =
+            recent[0];
+
+
+        box.innerHTML = `
+
+            <a
+                href="${story.page}"
+                class="recent-card"
+            >
+
+                <img
+                    src="${story.image}"
+                    style="
+                        width:100%;
+                        height:130px;
+                        object-fit:cover;
+                        border-radius:15px;
+                    "
+                >
+
+                <h3>
+                    ${story.title}
+                </h3>
+
+                <p>
+                    ${story.category}
+                </p>
+
+                <p>
+                    Continue from Chapter
+                    ${story.chapter}
+                </p>
+
+            </a>
+
+        `;
+
+    }
 
 };
 
-document.addEventListener("DOMContentLoaded",()=>{
 
-Reader.loadRecent();
+/*
+ * Load normal stories recently read.
+ */
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
 
-});
+        Reader.loadRecent();
+
+    }
+);
+
 
 
 /* ======================================
    AUTO DETECT STORY / ROMANTIC NOVEL PAGE
 ====================================== */
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
 
-    // Romantic Novel
-    if (
-        document.body.dataset.category === "Romantic Novels" &&
-        document.body.dataset.storyTitle
-    ) {
+        const body =
+            document.body;
 
-        RomanticReader.saveNovel();
 
-        return;
+        /*
+         * ROMANTIC NOVEL
+         */
+        if (
+            body.dataset.category ===
+            "Romantic Novels" &&
+            body.dataset.storyTitle
+        ) {
+
+            if (
+                typeof RomanticReader !==
+                "undefined" &&
+                typeof RomanticReader.saveNovel ===
+                "function"
+            ) {
+
+                RomanticReader.saveNovel();
+
+            }
+
+            return;
+
+        }
+
+
+        /*
+         * NORMAL STORY
+         */
+        if (
+            body.dataset.storyTitle
+        ) {
+
+            Reader.saveStory();
+
+        }
+
     }
-
-
-    // Normal Story
-    if (document.body.dataset.storyTitle) {
-
-        Reader.saveStory();
-
-    }
-
-});
+);
 
 
 
@@ -1094,206 +1310,559 @@ document.addEventListener("DOMContentLoaded", () => {
    STORYTIME
    YOUTUBE VIDEO PAGE
    VIDEO FUNCTIONALITY ONLY
-
-   IMPORTANT:
-   This code does NOT save videos to Recently Read.
-   It does NOT control the StoryTime theme.
 ===================================================== */
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
-    const videoCards =
-        document.querySelectorAll(".video-card");
-
-
-    /* =================================================
-       OPEN VIDEO
-    ================================================= */
-
-    videoCards.forEach(function (card) {
-
-        card.addEventListener("click", function () {
-
-            /* Stop other videos first */
-            stopAllOtherVideos(card);
-
-
-            /* Don't create another player
-               if this video is already open */
-            if (
-                card.querySelector(
-                    ".youtube-player-container"
-                )
-            ) {
-                return;
-            }
-
-
-            /* Get YouTube ID */
-            const videoId =
-                card.getAttribute("data-video-id");
-
-
-            if (!videoId) {
-                console.warn(
-                    "YouTube video ID is missing."
-                );
-
-                return;
-            }
-
-
-            /* Get thumbnail */
-            const thumbnail =
-                card.querySelector(".video-thumbnail");
-
-
-            if (!thumbnail) {
-                return;
-            }
-
-
-            /* Create player container */
-            const playerContainer =
-                document.createElement("div");
-
-            playerContainer.className =
-                "youtube-player-container";
-
-
-            /* Create iframe */
-            const iframe =
-                document.createElement("iframe");
-
-
-            iframe.src =
-                "https://www.youtube-nocookie.com/embed/"
-                + videoId
-                + "?autoplay=1&rel=0&enablejsapi=1";
-
-
-            iframe.title =
-                "StoryTime African Folktales Video";
-
-
-            iframe.setAttribute(
-                "allow",
-                "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            );
-
-
-            iframe.setAttribute(
-                "allowfullscreen",
-                ""
-            );
-
-
-            iframe.setAttribute(
-                "loading",
-                "lazy"
-            );
-
-
-            /* Put iframe inside player */
-            playerContainer.appendChild(
-                iframe
-            );
-
-
-            /* Replace thumbnail */
-            thumbnail.innerHTML = "";
-
-            thumbnail.appendChild(
-                playerContainer
-            );
-
-        });
-
-    });
-
-
-    /* =================================================
-       STOP OTHER VIDEOS
-    ================================================= */
-
-    function stopAllOtherVideos(currentCard) {
-
-        const players =
+        const videoCards =
             document.querySelectorAll(
-                ".youtube-player-container"
+                ".video-card"
             );
 
 
-        players.forEach(function (player) {
+        /*
+         * OPEN VIDEO
+         */
+        videoCards.forEach(
+            function (card) {
 
-            const card =
-                player.closest(".video-card");
+                card.addEventListener(
+                    "click",
+                    function () {
+
+                        /*
+                         * Stop other videos.
+                         */
+                        stopAllOtherVideos(
+                            card
+                        );
 
 
-            if (card === currentCard) {
-                return;
-            }
+                        /*
+                         * Don't create another
+                         * player if already open.
+                         */
+                        if (
+                            card.querySelector(
+                                ".youtube-player-container"
+                            )
+                        ) {
+
+                            return;
+
+                        }
 
 
-            const iframe =
-                player.querySelector("iframe");
+                        /*
+                         * Get YouTube ID.
+                         */
+                        const videoId =
+                            card.getAttribute(
+                                "data-video-id"
+                            );
 
 
-            if (iframe) {
+                        if (!videoId) {
 
-                iframe.contentWindow.postMessage(
-                    JSON.stringify({
-                        event: "command",
-                        func: "pauseVideo",
-                        args: []
-                    }),
-                    "*"
+                            console.warn(
+                                "YouTube video ID is missing."
+                            );
+
+                            return;
+
+                        }
+
+
+                        /*
+                         * Get thumbnail.
+                         */
+                        const thumbnail =
+                            card.querySelector(
+                                ".video-thumbnail"
+                            );
+
+
+                        if (!thumbnail) {
+
+                            console.warn(
+                                "Video thumbnail element is missing."
+                            );
+
+                            return;
+
+                        }
+
+
+                        /*
+                         * Create player container.
+                         */
+                        const playerContainer =
+                            document.createElement(
+                                "div"
+                            );
+
+
+                        playerContainer.className =
+                            "youtube-player-container";
+
+
+                        /*
+                         * Create iframe.
+                         */
+                        const iframe =
+                            document.createElement(
+                                "iframe"
+                            );
+
+
+                        iframe.src =
+                            "https://www.youtube-nocookie.com/embed/" +
+                            videoId +
+                            "?autoplay=1&rel=0&enablejsapi=1";
+
+
+                        iframe.title =
+                            "StoryTime African Folktales Video";
+
+
+                        iframe.setAttribute(
+                            "allow",
+                            "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        );
+
+
+                        iframe.setAttribute(
+                            "allowfullscreen",
+                            ""
+                        );
+
+
+                        iframe.setAttribute(
+                            "loading",
+                            "lazy"
+                        );
+
+
+                        /*
+                         * Put iframe inside player.
+                         */
+                        playerContainer.appendChild(
+                            iframe
+                        );
+
+
+                        /*
+                         * Replace thumbnail content.
+                         */
+                        thumbnail.innerHTML =
+                            "";
+
+
+                        thumbnail.appendChild(
+                            playerContainer
+                        );
+
+                    }
                 );
 
             }
+        );
 
-        });
+
+        /*
+         * STOP OTHER VIDEOS
+         */
+        function stopAllOtherVideos(
+            currentCard
+        ) {
+
+            const players =
+                document.querySelectorAll(
+                    ".youtube-player-container"
+                );
+
+
+            players.forEach(
+                function (player) {
+
+                    const card =
+                        player.closest(
+                            ".video-card"
+                        );
+
+
+                    if (
+                        card === currentCard
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    const iframe =
+                        player.querySelector(
+                            "iframe"
+                        );
+
+
+                    if (
+                        iframe &&
+                        iframe.contentWindow
+                    ) {
+
+                        iframe.contentWindow.postMessage(
+                            JSON.stringify({
+
+                                event: "command",
+
+                                func: "pauseVideo",
+
+                                args: []
+
+                            }),
+                            "*"
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /*
+         * PAUSE VIDEOS WHEN PAGE IS HIDDEN
+         */
+        document.addEventListener(
+            "visibilitychange",
+            function () {
+
+                if (
+                    document.visibilityState ===
+                    "hidden"
+                ) {
+
+                    const players =
+                        document.querySelectorAll(
+                            ".youtube-player-container iframe"
+                        );
+
+
+                    players.forEach(
+                        function (iframe) {
+
+                            if (
+                                iframe.contentWindow
+                            ) {
+
+                                iframe.contentWindow.postMessage(
+                                    JSON.stringify({
+
+                                        event: "command",
+
+                                        func: "pauseVideo",
+
+                                        args: []
+
+                                    }),
+                                    "*"
+                                );
+
+                            }
+
+                        }
+                    );
+
+                }
+
+            }
+        );
 
     }
+);
 
 
-    /* =================================================
-       PAUSE VIDEOS WHEN PAGE IS HIDDEN
-    ================================================= */
 
-    document.addEventListener(
-        "visibilitychange",
-        function () {
+/* ======================================
+   ROMANTIC NOVEL CHAPTER SYSTEM
+====================================== */
 
-            if (
-                document.visibilityState === "hidden"
-            ) {
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
 
-                const players =
-                    document.querySelectorAll(
-                        ".youtube-player-container iframe"
+        const body =
+            document.body;
+
+
+        /*
+         * Only run on Romantic Novel pages.
+         */
+        if (
+            body.dataset.category !==
+            "Romantic Novels"
+        ) {
+
+            return;
+
+        }
+
+
+        const novelChapterContainer =
+            document.querySelector(
+                "#novelChapters"
+            );
+
+
+        if (!novelChapterContainer) {
+
+            return;
+
+        }
+
+
+        /*
+         * Novel slug.
+         */
+        const novelSlug =
+            novelChapterContainer.dataset.novel;
+
+
+        if (!novelSlug) {
+
+            return;
+
+        }
+
+
+        /*
+         * Maximum chapters to check.
+         */
+        const maximumChapters = 50;
+
+
+        /*
+         * Check if chapter exists.
+         */
+        async function chapterExists(
+            url
+        ) {
+
+            try {
+
+                const response =
+                    await fetch(
+                        url,
+                        {
+                            method: "HEAD"
+                        }
                     );
 
 
-                players.forEach(function (iframe) {
+                return response.ok;
 
-                    iframe.contentWindow.postMessage(
-                        JSON.stringify({
-                            event: "command",
-                            func: "pauseVideo",
-                            args: []
-                        }),
-                        "*"
-                    );
+            } catch (error) {
 
-                });
+                console.warn(
+                    "Could not check chapter:",
+                    url
+                );
+
+                return false;
 
             }
 
         }
-    );
 
-});
+
+        /*
+         * Create chapter card.
+         */
+        function createChapterCard(
+            chapterNumber,
+            available
+        ) {
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "novel-chapter-card";
+
+
+            if (available) {
+
+                card.classList.add(
+                    "chapter-available"
+                );
+
+
+                card.innerHTML = `
+
+                    <a
+                        href="${novelSlug}-chapter-${chapterNumber}.html"
+                    >
+
+                        <span class="chapter-icon">
+                            📖
+                        </span>
+
+                        <div class="chapter-info">
+
+                            <h3>
+                                Chapter ${chapterNumber}
+                            </h3>
+
+                            <p>
+                                Available to read
+                            </p>
+
+                        </div>
+
+                    </a>
+
+                `;
+
+            } else {
+
+                card.classList.add(
+                    "chapter-locked"
+                );
+
+
+                card.innerHTML = `
+
+                    <span class="chapter-icon">
+                        🔒
+                    </span>
+
+                    <div class="chapter-info">
+
+                        <h3>
+                            Chapter ${chapterNumber}
+                        </h3>
+
+                        <p>
+                            Coming Soon...
+                        </p>
+
+                    </div>
+
+                `;
+
+            }
+
+
+            novelChapterContainer.appendChild(
+                card
+            );
+
+        }
+
+
+        /*
+         * Find available chapters.
+         */
+        async function loadChapters() {
+
+            novelChapterContainer.innerHTML =
+                "";
+
+
+            let foundChapter =
+                false;
+
+
+            let firstMissingChapter =
+                0;
+
+
+            for (
+                let chapter = 1;
+                chapter <= maximumChapters;
+                chapter++
+            ) {
+
+                const chapterUrl =
+                    `${novelSlug}-chapter-${chapter}.html`;
+
+
+                const exists =
+                    await chapterExists(
+                        chapterUrl
+                    );
+
+
+                if (exists) {
+
+                    foundChapter =
+                        true;
+
+
+                    createChapterCard(
+                        chapter,
+                        true
+                    );
+
+                } else {
+
+                    firstMissingChapter =
+                        chapter;
+
+                    break;
+
+                }
+
+            }
+
+
+            /*
+             * Show next unavailable chapter
+             * as Coming Soon.
+             */
+            if (foundChapter) {
+
+                createChapterCard(
+                    firstMissingChapter,
+                    false
+                );
+
+            } else {
+
+                novelChapterContainer.innerHTML = `
+
+                    <div class="novel-empty">
+
+                        <h3>
+                            📖 Coming Soon
+                        </h3>
+
+                        <p>
+                            The first chapter of this novel
+                            will be available soon. ❤️
+                        </p>
+
+                    </div>
+
+                `;
+
+            }
+
+        }
+
+
+        loadChapters();
+
+    }
+);
+
 
 
 /* ======================================
@@ -1308,52 +1877,73 @@ const RomanticReader = {
             document.body.dataset.storyTitle ||
             document.title;
 
+
         const image =
-            document.body.dataset.storyImage || "";
+            document.body.dataset.storyImage ||
+            "";
+
 
         const category =
             document.body.dataset.category ||
             "Romantic Novels";
 
+
         const page =
-            window.location.pathname.split("/").pop();
+            window.location.pathname
+                .split("/")
+                .pop();
+
 
         /*
-           IMPORTANT:
-           Get the exact chapter currently being opened.
-        */
+         * Permanent novel ID.
+         * All chapters of the same novel
+         * share this ID.
+         */
+        const novelID =
+            "novelChapter_" +
+            title.trim().replace(/\s+/g, "_");
 
-        const chapter =
+
+        /*
+         * IMPORTANT:
+         * Use data-chapter directly.
+         */
+        let chapter =
             parseInt(
                 document.body.dataset.chapter
-            ) || 1;
-
-
-        let recent =
-            JSON.parse(
-                localStorage.getItem(
-                    "recentReadRomanticNovel"
-                )
-            ) || [];
+            );
 
 
         /*
-           Keep ONLY ONE recently read novel.
-           Opening another chapter updates
-           the existing card.
-        */
+         * Fallback only if data-chapter
+         * doesn't exist.
+         */
+        if (isNaN(chapter)) {
 
-        recent = [{
+            chapter =
+                parseInt(
+                    localStorage.getItem(
+                        novelID
+                    )
+                ) || 1;
 
-            title,
+        }
 
-            image,
 
-            category,
+        /*
+         * Keep ONLY one recently-read novel.
+         */
+        const recent = [{
 
-            page,
+            title: title,
 
-            chapter,
+            image: image,
+
+            category: category,
+
+            page: page,
+
+            chapter: chapter,
 
             time: Date.now()
 
@@ -1361,11 +1951,18 @@ const RomanticReader = {
 
 
         localStorage.setItem(
-
             "recentReadRomanticNovel",
-
             JSON.stringify(recent)
+        );
 
+
+        /*
+         * Also remember the current chapter
+         * for this novel.
+         */
+        localStorage.setItem(
+            novelID,
+            chapter
         );
 
     },
@@ -1378,7 +1975,12 @@ const RomanticReader = {
                 "recentReadNovels"
             );
 
-        if (!box) return;
+
+        if (!box) {
+
+            return;
+
+        }
 
 
         const recent =
@@ -1399,13 +2001,16 @@ const RomanticReader = {
         }
 
 
-        const novel = recent[0];
+        const novel =
+            recent[0];
 
 
         box.innerHTML = `
 
-            <a href="${novel.page}"
-               class="recent-card">
+            <a
+                href="${novel.page}"
+                class="recent-card"
+            >
 
                 <img
                     src="${novel.image}"
@@ -1439,48 +2044,20 @@ const RomanticReader = {
 };
 
 
-/* ======================================
-   AUTO DETECT STORY / ROMANTIC NOVEL
-====================================== */
+/*
+ * Load Romantic Novel Recently Read.
+ */
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
 
-document.addEventListener("DOMContentLoaded", () => {
-
-    /*
-       ROMANTIC NOVEL
-       Send Romantic Novels to their
-       separate Recently Read system.
-    */
-
-    if (
-        document.body.dataset.category === "Romantic Novels" &&
-        document.body.dataset.storyTitle
-    ) {
-
-        RomanticReader.saveNovel();
-
-        return;
-    }
-
-
-    /*
-       NORMAL STORIES
-       Keep the original Reader system.
-    */
-
-    if (document.body.dataset.storyTitle) {
-
-        Reader.saveStory();
+        RomanticReader.loadNovel();
 
     }
+);
 
-});
 
-/* ======================================
-   LOAD ROMANTIC NOVEL RECENTLY READ
-====================================== */
 
-document.addEventListener("DOMContentLoaded", () => {
 
-    RomanticReader.loadNovel();
 
-});
+
