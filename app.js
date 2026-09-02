@@ -2015,3 +2015,17 @@ document.addEventListener(
     }
 );
 
+
+
+/* ======================================
+   LOAD RECENTLY READ NOVEL
+====================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        RomanticReader.loadNovel();
+
+    }
+);
