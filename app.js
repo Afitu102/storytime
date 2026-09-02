@@ -1864,15 +1864,166 @@ document.addEventListener(
 );
 
 
+
+
 /* ======================================
    ROMANTIC NOVELS — RECENTLY READ
+   FINAL VERSION
 ====================================== */
 
 const RomanticReader = {
 
-    saveNovel() {
+    /* ----------------------------------
+       GET CURRENT CHAPTER
+    ---------------------------------- */
+
+    getChapter() {
 
         const body = document.body;
+
+        /*
+         * FIRST:
+         * Check the chapter number in the URL.
+         *
+         * Example:
+         * where-love-begins-chapter-1.html
+         * where-love-begins-chapter-2.html
+         */
+
+        const page =
+            window.location.pathname
+                .split("/")
+                .pop()
+                .toLowerCase();
+
+        const urlMatch =
+            page.match(/chapter[-_]?(\d+)/i);
+
+        if (urlMatch) {
+
+            const chapter =
+                parseInt(urlMatch[1]);
+
+            if (!isNaN(chapter)) {
+                return chapter;
+            }
+        }
+
+
+        /*
+         * SECOND:
+         * Use data-chapter from HTML.
+         */
+
+        const htmlChapter =
+            parseInt(
+                body.dataset.chapter
+            );
+
+        if (!isNaN(htmlChapter)) {
+            return htmlChapter;
+        }
+
+
+        /*
+         * THIRD:
+         * Use previously saved chapter.
+         */
+
+        const novelID =
+            this.getNovelID();
+
+        const savedChapter =
+            parseInt(
+                localStorage.getItem(novelID)
+            );
+
+        if (!isNaN(savedChapter)) {
+            return savedChapter;
+        }
+
+
+        /*
+         * DEFAULT
+         */
+
+        return 1;
+    },
+
+
+    /* ----------------------------------
+       GET NOVEL TITLE
+    ---------------------------------- */
+
+    getNovelTitle() {
+
+        const body = document.body;
+
+        /*
+         * Prefer data-novel-title
+         * if you added it to the HTML.
+         */
+
+        if (
+            body.dataset.novelTitle
+        ) {
+
+            return body.dataset.novelTitle;
+        }
+
+
+        /*
+         * Otherwise use data-story-title.
+         */
+
+        if (
+            body.dataset.storyTitle
+        ) {
+
+            return body.dataset.storyTitle;
+        }
+
+
+        /*
+         * Final fallback.
+         */
+
+        return document.title;
+    },
+
+
+    /* ----------------------------------
+       GET NOVEL ID
+    ---------------------------------- */
+
+    getNovelID() {
+
+        const title =
+            this.getNovelTitle();
+
+        return (
+            "storytimeNovel_" +
+            title
+                .trim()
+                .replace(/\s+/g, "_")
+                .toLowerCase()
+        );
+    },
+
+
+    /* ----------------------------------
+       SAVE NOVEL
+    ---------------------------------- */
+
+    saveNovel() {
+
+        const body =
+            document.body;
+
+
+        /*
+         * Only Romantic Novels
+         */
 
         if (
             body.dataset.category !==
@@ -1881,50 +2032,104 @@ const RomanticReader = {
             return;
         }
 
-        const title =
-            body.dataset.storyTitle ||
-            document.title;
 
-        const image =
-            body.dataset.storyImage ||
-            "";
-
-        const category =
-            body.dataset.storyCategory ||
-            "Romantic Novels";
+        /*
+         * Only save actual chapter pages.
+         *
+         * The page must have either:
+         * data-chapter
+         *
+         * OR a chapter number in its filename.
+         */
 
         const page =
             window.location.pathname
                 .split("/")
                 .pop();
 
-        /*
-         * Get the exact chapter from the page.
-         */
-        const chapter =
+        const urlMatch =
+            page.match(/chapter[-_]?(\d+)/i);
+
+        const htmlChapter =
             parseInt(
                 body.dataset.chapter
-            ) || 1;
+            );
+
+        if (
+            !urlMatch &&
+            isNaN(htmlChapter)
+        ) {
+            return;
+        }
+
 
         /*
-         * Keep ONLY ONE recently-read novel.
+         * Get information.
          */
+
+        const title =
+            this.getNovelTitle();
+
+        const image =
+            body.dataset.storyImage ||
+            body.dataset.novelImage ||
+            "";
+
+        const category =
+            "Romantic Novels";
+
+        const chapter =
+            this.getChapter();
+
+
+        /*
+         * IMPORTANT:
+         *
+         * Store the EXACT chapter page.
+         */
+
         const recent = [{
+
             title: title,
+
             image: image,
+
             category: category,
+
             page: page,
+
             chapter: chapter,
+
             time: Date.now()
+
         }];
+
+
+        /*
+         * Save recently read novel.
+         */
 
         localStorage.setItem(
             "recentReadRomanticNovel",
             JSON.stringify(recent)
         );
 
+
+        /*
+         * Save current chapter separately.
+         */
+
+        localStorage.setItem(
+            this.getNovelID(),
+            chapter
+        );
+
     },
 
+
+    /* ----------------------------------
+       LOAD RECENTLY READ NOVEL
+    ---------------------------------- */
 
     loadNovel() {
 
@@ -1937,6 +2142,7 @@ const RomanticReader = {
             return;
         }
 
+
         const recent =
             JSON.parse(
                 localStorage.getItem(
@@ -1944,7 +2150,14 @@ const RomanticReader = {
                 )
             ) || [];
 
-        if (recent.length === 0) {
+
+        /*
+         * Nothing read yet
+         */
+
+        if (
+            recent.length === 0
+        ) {
 
             box.innerHTML =
                 "<p>No novels read yet.</p>";
@@ -1952,8 +2165,19 @@ const RomanticReader = {
             return;
         }
 
+
+        /*
+         * We only want ONE novel.
+         */
+
         const novel =
             recent[0];
+
+
+        /*
+         * Display the EXACT
+         * chapter that was opened.
+         */
 
         box.innerHTML = `
 
@@ -1964,6 +2188,7 @@ const RomanticReader = {
 
                 <img
                     src="${novel.image}"
+                    alt="${novel.title}"
                     style="
                         width:100%;
                         height:130px;
@@ -1988,23 +2213,25 @@ const RomanticReader = {
             </a>
 
         `;
+
     }
 
 };
 
 
-
-
 /* ======================================
-   AUTO SAVE RECENTLY READ NOVEL
+   AUTO SAVE ROMANTIC NOVEL
 ====================================== */
 
 document.addEventListener(
     "DOMContentLoaded",
     () => {
 
+        const body =
+            document.body;
+
         if (
-            document.body.dataset.category ===
+            body.dataset.category ===
             "Romantic Novels"
         ) {
 
@@ -2016,9 +2243,8 @@ document.addEventListener(
 );
 
 
-
 /* ======================================
-   LOAD RECENTLY READ NOVEL
+   LOAD ROMANTIC NOVEL RECENTLY READ
 ====================================== */
 
 document.addEventListener(
@@ -2028,4 +2254,4 @@ document.addEventListener(
         RomanticReader.loadNovel();
 
     }
-);
+);    
