@@ -1995,5 +1995,23 @@ const RomanticReader = {
 
 
 
+/* ======================================
+   AUTO SAVE RECENTLY READ NOVEL
+====================================== */
 
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        if (
+            document.body.dataset.category ===
+            "Romantic Novels"
+        ) {
+
+            RomanticReader.saveNovel();
+
+        }
+
+    }
+);
 
