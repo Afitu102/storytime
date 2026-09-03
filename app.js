@@ -1865,5 +1865,41 @@ document.addEventListener(
 
 
 
+document.querySelectorAll(".story-card").forEach(card => {
 
+    const postedTime = card.dataset.posted;
+    const timeElement = card.querySelector(".story-posted-time");
+
+    if (!postedTime || !timeElement) return;
+
+    const postedDate = new Date(postedTime);
+    const now = new Date();
+
+    const difference = now - postedDate;
+    const hoursPassed = difference / (1000 * 60 * 60);
+
+    if (hoursPassed < 24) {
+
+        const time = postedDate.toLocaleTimeString([], {
+            hour: "numeric",
+            minute: "2-digit"
+        });
+
+        timeElement.textContent = `Today, ${time}`;
+
+    } else if (hoursPassed < 48) {
+
+        timeElement.textContent = "Yesterday";
+
+    } else {
+
+        timeElement.textContent = postedDate.toLocaleDateString([], {
+            month: "short",
+            day: "numeric",
+            year: "numeric"
+        });
+
+    }
+
+});
                     
