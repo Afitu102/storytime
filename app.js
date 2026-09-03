@@ -1921,3 +1921,86 @@ document.querySelectorAll(".story-card").forEach(card => {
     }
 
 });
+
+
+
+document.addEventListener("click", function (e) {
+
+    // PLAY BUTTON
+    if (e.target.classList.contains("play-btn")) {
+
+        const card = e.target.closest(".story-card");
+        if (!card) return;
+
+        const audio = card.querySelector(".audio-player");
+        const timeDisplay = card.querySelector(".time");
+
+        if (!audio) return;
+
+        audio.play().catch(error => {
+            console.error("Audio could not play:", error);
+        });
+
+        e.target.textContent = "⏸ Playing";
+
+        audio.addEventListener("timeupdate", function () {
+
+            if (!timeDisplay) return;
+
+            const minutes = Math.floor(audio.currentTime / 60);
+            const seconds = Math.floor(audio.currentTime % 60)
+                .toString()
+                .padStart(2, "0");
+
+            timeDisplay.textContent = `${minutes}:${seconds}`;
+
+        });
+
+    }
+
+
+    // PAUSE BUTTON
+    if (e.target.classList.contains("pause-btn")) {
+
+        const card = e.target.closest(".story-card");
+        if (!card) return;
+
+        const audio = card.querySelector(".audio-player");
+        const playBtn = card.querySelector(".play-btn");
+
+        if (!audio) return;
+
+        audio.pause();
+
+        if (playBtn) {
+            playBtn.textContent = "Play";
+        }
+
+    }
+
+});
+
+
+// RESET BUTTON WHEN AUDIO ENDS
+document.querySelectorAll(".audio-player").forEach(audio => {
+
+    audio.addEventListener("ended", function () {
+
+        const card = audio.closest(".story-card");
+
+        if (!card) return;
+
+        const playBtn = card.querySelector(".play-btn");
+        const timeDisplay = card.querySelector(".time");
+
+        if (playBtn) {
+            playBtn.textContent = "Play";
+        }
+
+        if (timeDisplay) {
+            timeDisplay.textContent = "0:00";
+        }
+
+    });
+
+});
