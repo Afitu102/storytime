@@ -252,148 +252,91 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // PART B starts here...
         // =============================
-// PLAY
+
 // =============================
+          // PLAY
+        // =============================
 
-playBtn.addEventListener("click", async () => {
+playBtn.addEventListener("click", () => {
 
-    // ==========================================
-    // STOP ANY OTHER STORY AUDIO
-    // ==========================================
+    // Stop previous audio
+    if (currentAudio && currentAudio !== audio) {
 
-    document.querySelectorAll(".audio-player").forEach(otherAudio => {
+        currentAudio.pause();
 
-        if (otherAudio !== audio) {
+        document
+            .querySelectorAll(".play-btn")
+            .forEach(btn => {
 
-            otherAudio.pause();
+                btn.textContent = "▶ Play";
 
-            // Reset its button
-            const otherCard = otherAudio.closest(".story-card");
+            });
 
-            if (otherCard) {
-
-                const otherPlayBtn =
-                    otherCard.querySelector(".play-btn");
-
-                if (otherPlayBtn) {
-                    otherPlayBtn.textContent = "▶ Play";
-                }
-
-            }
-
-        }
-
-    });
-
-
-    // ==========================================
-    // SET CURRENT AUDIO
-    // ==========================================
+    }
 
     currentAudio = audio;
-
     currentStory = {
+
         title,
         category,
         page,
         index
+
     };
 
+     // Hide Continue Listening card if user starts manually
 
-    // ==========================================
-    // HIDE CONTINUE LISTENING
-    // ==========================================
+const continueCard =
+    document.getElementById("continueCard");
 
-    const continueCard =
-        document.getElementById("continueCard");
+if (continueCard) {
 
-    if (continueCard) {
+    continueCard.style.opacity = "0";
 
-        continueCard.style.opacity = "0";
+    setTimeout(() => {
 
-        setTimeout(() => {
+        continueCard.style.display = "none";
 
-            continueCard.style.display = "none";
+    }, 300);
 
-        }, 300);
+   }
 
-    }
-
-
-    // ==========================================
-    // SAVE CURRENT STORY
-    // ==========================================
-
-    localStorage.setItem(
-        "storytime_continue",
-        title
-    );
-
-
-    // ==========================================
-    // RESTORE PROGRESS
-    // ==========================================
-
+  localStorage.setItem(
+    "storytime_continue",
+    title
+);
+    
     const progress = getProgress(title);
 
+if (progress) {
 
-    if (progress) {
+    audio.addEventListener("loadedmetadata", () => {
 
-        const restoreAndPlay = () => {
+        audio.currentTime = progress.time;
 
-            audio.currentTime = progress.time;
+        audio.play();
 
-            audio.play().catch(error => {
-
-                console.error(
-                    "Audio play error:",
-                    error
-                );
-
-            });
-
-        };
-
-
-        if (audio.readyState >= 1) {
-
-            restoreAndPlay();
-
-        } else {
-
-            audio.addEventListener(
-                "loadedmetadata",
-                restoreAndPlay,
-                { once: true }
-            );
-
-            audio.load();
-
-        }
-
-    } else {
-
-        audio.play().catch(error => {
-
-            console.error(
-                "Audio play error:",
-                error
-            );
-
-        });
-
-    }
-
-
-    // ==========================================
-    // PLAYING BUTTON
-    // ==========================================
+    }, { once:true });
 
     audio.addEventListener("playing", () => {
 
         playBtn.textContent = "⏸ Playing";
 
-    }, { once: true });
+    }, { once:true });
+
+    audio.load();
+
+} else {
+
+    audio.play();
+
+audio.addEventListener("playing", () => {
+
+    playBtn.textContent = "⏸ Playing";
+
+}, { once:true });
+ 
+}
 
 });
 
