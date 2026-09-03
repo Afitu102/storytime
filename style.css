@@ -1970,5 +1970,45 @@ section p {
 
 
 
+/* Small horizontal story cards */
+
+.story-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    text-decoration: none;
+}
+
+.story-card-image {
+    width: 65px;
+    height: 65px;
+    min-width: 65px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.story-card-content {
+    flex: 1;
+    text-align: left;
+}
+
+.story-card-content h3 {
+    margin: 0 0 5px;
+    font-size: 16px;
+}
+
+.story-posted-time {
+    margin: 0 0 4px;
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+.story-reading-time {
+    margin: 0;
+    font-size: 12px;
+    opacity: 0.7;
+}
+
 
 
