@@ -1875,10 +1875,23 @@ document.querySelectorAll(".story-card").forEach(card => {
     const postedDate = new Date(postedTime);
     const now = new Date();
 
-    const difference = now - postedDate;
-    const hoursPassed = difference / (1000 * 60 * 60);
+    // Remove the time portion and compare calendar dates
+    const postedDay = new Date(
+        postedDate.getFullYear(),
+        postedDate.getMonth(),
+        postedDate.getDate()
+    );
 
-    if (hoursPassed < 24) {
+    const today = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate()
+    );
+
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+
+    if (postedDay.getTime() === today.getTime()) {
 
         const time = postedDate.toLocaleTimeString([], {
             hour: "numeric",
@@ -1887,13 +1900,19 @@ document.querySelectorAll(".story-card").forEach(card => {
 
         timeElement.textContent = `Today, ${time}`;
 
-    } else if (hoursPassed < 48) {
+    } else if (postedDay.getTime() === yesterday.getTime()) {
 
-        timeElement.textContent = "Yesterday";
+        const time = postedDate.toLocaleTimeString([], {
+            hour: "numeric",
+            minute: "2-digit"
+        });
+
+        timeElement.textContent = `Yesterday, ${time}`;
 
     } else {
 
         timeElement.textContent = postedDate.toLocaleDateString([], {
+            weekday: "long",
             month: "short",
             day: "numeric",
             year: "numeric"
@@ -1902,4 +1921,3 @@ document.querySelectorAll(".story-card").forEach(card => {
     }
 
 });
-                    
