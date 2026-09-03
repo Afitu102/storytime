@@ -215,6 +215,9 @@ function getRecentlyPlayed() {
 // AUDIO ENGINE V6 (PART A)
 // ======================================
 
+  let currentAudio = null;
+  let currentStory = null;
+
 document.addEventListener("DOMContentLoaded", () => {
 
     const storyCards =
@@ -251,89 +254,148 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // PART B starts here...
         // =============================
-          // PLAY
-        // =============================
+// PLAY
+// =============================
 
-playBtn.addEventListener("click", () => {
+playBtn.addEventListener("click", async () => {
 
-    // Stop previous audio
-    if (currentAudio && currentAudio !== audio) {
+    // ==========================================
+    // STOP ANY OTHER STORY AUDIO
+    // ==========================================
 
-        currentAudio.pause();
+    document.querySelectorAll(".audio-player").forEach(otherAudio => {
 
-        document
-            .querySelectorAll(".play-btn")
-            .forEach(btn => {
+        if (otherAudio !== audio) {
 
-                btn.textContent = "▶ Play";
+            otherAudio.pause();
 
-            });
+            // Reset its button
+            const otherCard = otherAudio.closest(".story-card");
 
-    }
+            if (otherCard) {
+
+                const otherPlayBtn =
+                    otherCard.querySelector(".play-btn");
+
+                if (otherPlayBtn) {
+                    otherPlayBtn.textContent = "▶ Play";
+                }
+
+            }
+
+        }
+
+    });
+
+
+    // ==========================================
+    // SET CURRENT AUDIO
+    // ==========================================
 
     currentAudio = audio;
-    currentStory = {
 
+    currentStory = {
         title,
         category,
         page,
         index
-
     };
 
-     // Hide Continue Listening card if user starts manually
 
-const continueCard =
-    document.getElementById("continueCard");
+    // ==========================================
+    // HIDE CONTINUE LISTENING
+    // ==========================================
 
-if (continueCard) {
+    const continueCard =
+        document.getElementById("continueCard");
 
-    continueCard.style.opacity = "0";
+    if (continueCard) {
 
-    setTimeout(() => {
+        continueCard.style.opacity = "0";
 
-        continueCard.style.display = "none";
+        setTimeout(() => {
 
-    }, 300);
+            continueCard.style.display = "none";
 
-   }
+        }, 300);
 
-  localStorage.setItem(
-    "storytime_continue",
-    title
-);
-    
+    }
+
+
+    // ==========================================
+    // SAVE CURRENT STORY
+    // ==========================================
+
+    localStorage.setItem(
+        "storytime_continue",
+        title
+    );
+
+
+    // ==========================================
+    // RESTORE PROGRESS
+    // ==========================================
+
     const progress = getProgress(title);
 
-if (progress) {
 
-    audio.addEventListener("loadedmetadata", () => {
+    if (progress) {
 
-        audio.currentTime = progress.time;
+        const restoreAndPlay = () => {
 
-        audio.play();
+            audio.currentTime = progress.time;
 
-    }, { once:true });
+            audio.play().catch(error => {
+
+                console.error(
+                    "Audio play error:",
+                    error
+                );
+
+            });
+
+        };
+
+
+        if (audio.readyState >= 1) {
+
+            restoreAndPlay();
+
+        } else {
+
+            audio.addEventListener(
+                "loadedmetadata",
+                restoreAndPlay,
+                { once: true }
+            );
+
+            audio.load();
+
+        }
+
+    } else {
+
+        audio.play().catch(error => {
+
+            console.error(
+                "Audio play error:",
+                error
+            );
+
+        });
+
+    }
+
+
+    // ==========================================
+    // PLAYING BUTTON
+    // ==========================================
 
     audio.addEventListener("playing", () => {
 
         playBtn.textContent = "⏸ Playing";
 
-    }, { once:true });
-
-    audio.load();
-
-} else {
-
-    audio.play();
-
-audio.addEventListener("playing", () => {
-
-    playBtn.textContent = "⏸ Playing";
-
-}, { once:true });
- 
-}
+    }, { once: true });
 
 });
 
