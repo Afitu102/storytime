@@ -215,8 +215,6 @@ function getRecentlyPlayed() {
 // AUDIO ENGINE V6 (PART A)
 // ======================================
 
-  let currentAudio = null;
-  let currentStory = null;
 
 document.addEventListener("DOMContentLoaded", () => {
 
