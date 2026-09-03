@@ -1927,9 +1927,9 @@ document.querySelectorAll(".story-card").forEach(card => {
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
-    const cards = document.querySelectorAll(".story-card");
+    const allAudios = document.querySelectorAll(".audio-player");
 
-    cards.forEach(function (card) {
+    document.querySelectorAll(".story-card").forEach(function (card) {
 
         const audio = card.querySelector(".audio-player");
         const playBtn = card.querySelector(".play-btn");
@@ -1938,45 +1938,76 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (!audio || !playBtn || !pauseBtn) return;
 
-        playBtn.addEventListener("click", function () {
+        playBtn.type = "button";
+        pauseBtn.type = "button";
 
-            // Pause every other audio
-            document.querySelectorAll(".audio-player").forEach(function (otherAudio) {
+        // PLAY BUTTON
+        playBtn.addEventListener("click", async function (event) {
+
+            event.preventDefault();
+
+            // STOP EVERY OTHER AUDIO
+            allAudios.forEach(function (otherAudio) {
                 if (otherAudio !== audio) {
                     otherAudio.pause();
                 }
             });
 
-            audio.play().catch(function (error) {
+            try {
+                await audio.play();
+            } catch (error) {
                 console.error("Audio could not play:", error);
-            });
+            }
+
         });
 
-        pauseBtn.addEventListener("click", function () {
+        // PAUSE BUTTON
+        pauseBtn.addEventListener("click", function (event) {
+
+            event.preventDefault();
+
             audio.pause();
+
         });
 
+        // WHEN THIS AUDIO STARTS
         audio.addEventListener("play", function () {
+
+            // Extra safety: stop every other audio
+            allAudios.forEach(function (otherAudio) {
+                if (otherAudio !== audio) {
+                    otherAudio.pause();
+                }
+            });
+
             playBtn.textContent = "⏸ Playing";
+
         });
 
+        // WHEN AUDIO PAUSES
         audio.addEventListener("pause", function () {
+
             playBtn.textContent = "Play";
+
         });
 
+        // UPDATE TIME
         audio.addEventListener("timeupdate", function () {
 
             if (!timeDisplay) return;
 
             const minutes = Math.floor(audio.currentTime / 60);
+
             const seconds = Math.floor(audio.currentTime % 60)
                 .toString()
                 .padStart(2, "0");
 
             timeDisplay.textContent =
                 minutes + ":" + seconds;
+
         });
 
+        // WHEN AUDIO FINISHES
         audio.addEventListener("ended", function () {
 
             playBtn.textContent = "Play";
@@ -1984,14 +2015,18 @@ document.addEventListener("DOMContentLoaded", function () {
             if (timeDisplay) {
                 timeDisplay.textContent = "0:00";
             }
+
         });
 
+        // AUDIO ERROR
         audio.addEventListener("error", function () {
+
             console.error(
-                "Audio file failed:",
+                "Audio error:",
                 audio.currentSrc,
                 audio.error
             );
+
         });
 
     });
